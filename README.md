@@ -7,6 +7,10 @@ Basically, it's brightly colored, delibarately low fidelity sort of aesthetic. T
 
 Uses techniques described by Shamus Young in his [Pixel City](http://www.shamusyoung.com/twentysidedtale/?p=2940) project.
 
+This project was built using the [JMonkey Engine](https://github.com/jMonkeyEngine) and this repository is maintained using the built-in team tools in the JMonkey SDK. So if you want to look at the project or build it for yourself, you'll need to download the SDK first.
+
+This project also makes use of [Tralala's SpriteLibrary](https://hub.jmonkeyengine.org/t/spritelibrary-efficient-render-of-sprites/20901) for the JMonkeyEngine.
+
 Requirements
 -----
 Although this is an ongoing project, and is subject to changes in direction, I think it'd be useful to outline some basic requirements.
