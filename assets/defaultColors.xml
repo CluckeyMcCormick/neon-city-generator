@@ -1,0 +1,25 @@
+<colors>
+  	<buildingLight>
+		<color> 
+			<red></red> <green></green> <blue></blue>
+		</color>
+	</buildingLight>
+
+	<buildingBase>
+		<color> 
+			<red></red> <green></green> <blue></blue>
+		</color>
+	</buildingBase>
+
+	<warningLight>
+		<color> 
+			<red></red> <green></green> <blue></blue>
+		</color>
+	</warningLight>
+
+	<streetLight>
+		<color> 
+			<red></red> <green></green> <blue></blue>
+		</color>
+	</streetLight>
+</colors>
