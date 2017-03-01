@@ -52,3 +52,5 @@ Eventual Goals - Hopes, Dreams, Miscellaneous
 
 
 * The way I'm going to use this, I will be having a separate program playing music from a playlist. It could be good to integrate this into the program itself - and maybe even perform some sort of analysis, so that transitions could be tied in-time with the music.
+
+* Weather effects would be nice. I love cities wreathed in fog and rain - and [Simon Stålenhag](http://www.simonstalenhag.se/) seems to love it as well! At minimum, I'd like to try and implement a sort of rainy lens effect - like the one seen [here](http://igloomag.com/wp/wp-content/uploads/2016/04/2814-birth-of-a-new-day-animated.gif). 
