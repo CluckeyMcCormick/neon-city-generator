@@ -9,7 +9,7 @@ Uses techniques described by Shamus Young in his [Pixel City](http://www.shamusy
 
 This project was built using the [JMonkey Engine](https://github.com/jMonkeyEngine) and this repository is maintained using the built-in team tools in the JMonkey SDK. So if you want to look at the project or build it for yourself, you'll need to download the SDK first.
 
-This project also makes use of [Tralala's SpriteLibrary](https://hub.jmonkeyengine.org/t/spritelibrary-efficient-render-of-sprites/20901) for the JMonkeyEngine.
+This project also makes use of [Tralala's SpriteLibrary](https://hub.jmonkeyengine.org/t/spritelibrary-efficient-render-of-sprites/20901) for the JMonkeyEngine. I am currently working to remove this dependency.
 
 Requirements
 -----
@@ -58,3 +58,7 @@ Eventual Goals - Hopes, Dreams, Miscellaneous
 * The way I'm going to use this, I will be having a separate program playing music from a playlist. It could be good to integrate this into the program itself - and maybe even perform some sort of analysis, so that transitions could be tied in-time with the music.
 
 * Weather effects would be nice. I love cities wreathed in fog and rain - and [Simon Stålenhag](http://www.simonstalenhag.se/) seems to love it as well! At minimum, I'd like to try and implement a sort of rainy lens effect - like the one seen [here](http://igloomag.com/wp/wp-content/uploads/2016/04/2814-birth-of-a-new-day-animated.gif). 
+
+* What should occupy the horizon? Probably some sort of mountains, or an ocean of some kind (especially if I implement some sort of port), or maybe just even more sprawl.
+
+* I'd also love some extra details - elevated rails, regular rails, canals, washes, rivers, etc.
