@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package builder;
+package production;
 
 import building.BuildingDetail;
 import com.jme3.asset.AssetManager;

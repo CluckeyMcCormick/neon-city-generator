@@ -4,8 +4,8 @@
  */
 package building;
 
-import builder.ColorBook;
-import builder.MaterialBook;
+import production.ColorBook;
+import production.MaterialBook;
 import building.type.FloorCellBuilding;
 import mesh.TextureScalingQuad;
 
@@ -20,8 +20,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import engine.sprites.SpriteImage;
-import builder.MaterialBuilder;
-import builder.TextureBuilder;
+import production.MaterialBuilder;
+import production.TextureBuilder;
 import cityorg.Cardinal;
 import static cityorg.Cardinal.NORTH;
 import cityorg.CityBlock;

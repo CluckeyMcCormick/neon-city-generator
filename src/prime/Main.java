@@ -1,6 +1,6 @@
 package prime;
 
-import builder.ColorBook;
+import production.ColorBook;
 import building.BuildingFactory;
 import building.BuildingDetail;
 import road.Road;
@@ -63,21 +63,26 @@ public class Main extends SimpleApplication {
         BuildingFactory bfA = new BuildingFactory( colob, bdA, spi, this.assetManager);
         
         BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1, 3, 3);
-        CityBlock cb = new BlockAlley(blockDet, 256, 64, new int[]{0, 16, 0, 16}, true);
+        CityBlock lumpyCB = new BlockAlley(blockDet, 64, 64, new int[]{0, 16, 0, 16}, true);
+        CityBlock respCB = new BlockAlley(blockDet, 96, 96, new int[]{0, 0, 0, 0}, true);
         
         //RoadFactory rf = new RoadFactory( MaterialBuilder.roadMats(roadColors, assetManager) );
         
         Road rod = new Road(RoadSize.LARGE_STREET, 45);
         //rf.buildRoad(rod, 256);
         
-        cb.generateBuildings(bfA);
+        lumpyCB.generateBuildings(bfA);
+        respCB.generateBuildings(bfA);
+        
+        respCB.setLocalTranslation(-25, 0, 0);
         
         //rootNode.attachChild( rod.getRoad() );
-        rootNode.attachChild( cb.getNode() );
+        rootNode.attachChild( lumpyCB.getNode() );
+        rootNode.attachChild( respCB.getNode() );
         
         Geometry gemtric = new Geometry("nottin", 
             new UpwardWarpingQuad(
-                248 * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL, 
+                56 * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL, 
                 20, 
                 new float[]{
                     0,

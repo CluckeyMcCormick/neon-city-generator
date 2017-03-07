@@ -7,7 +7,7 @@ package building;
 import com.jme3.texture.Image;
 import com.jme3.texture.plugins.AWTLoader;
 import java.awt.image.BufferedImage;
-import builder.TextureBuilder;
+import production.TextureBuilder;
 import cityorg.CityStructure;
 
 /**

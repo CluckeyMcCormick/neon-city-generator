@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package builder;
+package production;
 
 import building.WindowStyle;
 import com.jme3.material.Material;
@@ -38,7 +38,7 @@ public class MaterialBook {
     }
     
     public Material getLitMat(int colorIndex, WindowStyle ws){
-        return this.litMat[colorIndex][ WindowStyle.indexOf(ws) ];
+        return this.litMat[ colorIndex % this.litMat.length ][ WindowStyle.indexOf(ws) ];
     }    
     
     /* Base Material getter */
@@ -53,16 +53,16 @@ public class MaterialBook {
     
     /* Fade Material getter*/
     public Material getFadeMat(int colorIndex){
-        return this.otherMat[FADE_INDEX][colorIndex];
+        return this.otherMat[FADE_INDEX][colorIndex % this.otherMat[FADE_INDEX].length];
     }
     
     /* Trans-fade Material getter*/
     public Material getTransMat(int colorIndex){
-        return this.otherMat[TRANS_INDEX][colorIndex];
+        return this.otherMat[TRANS_INDEX][colorIndex % this.otherMat[TRANS_INDEX].length];
     }
     
     /* Trans-fade Material getter*/
     public Material getFlipTransMat(int colorIndex){
-        return this.otherMat[FLIP_TRANS_INDEX][colorIndex];
+        return this.otherMat[FLIP_TRANS_INDEX][colorIndex % this.otherMat[FLIP_TRANS_INDEX].length];
     }
 }

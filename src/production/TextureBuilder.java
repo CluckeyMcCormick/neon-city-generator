@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package builder;
+package production;
 
 import building.BuildingDetail;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import static builder.CellState.DIM;
-import static builder.CellState.LIT;
+import static production.CellState.DIM;
+import static production.CellState.LIT;
 import building.WindowStyle;
 import com.jme3.math.ColorRGBA;
 import prime.RandomSingleton;
