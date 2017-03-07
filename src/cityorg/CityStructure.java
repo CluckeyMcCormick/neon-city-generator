@@ -7,7 +7,6 @@ package cityorg;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import engine.sprites.Sprite;
 
 /**
  *
@@ -26,21 +25,12 @@ public abstract class CityStructure {
     // The node that references this structure
     private Node node;
     
-    //The sprites that are attatched to this structure
-    private Sprite[] sprites;
-    
     public void addFeature(Spatial s){
         this.node.attachChild(s);
     }
     
     public void setLocalTranslation(float x, float y, float z) {
         this.node.setLocalTranslation(x, y, z);
-        
-        if(sprites != null)
-            for(int i = 0; i < sprites.length; i++)
-                this.sprites[i].setPosition(
-                    this.sprites[i].getPosition().add(x, y, z)
-                );
     }
     
     public void setUnitTranslation(int x, int y, int z) {
@@ -61,25 +51,11 @@ public abstract class CityStructure {
         this.setLocalTranslation(newX + lX, newY + lY, newZ + lZ);
     }
     
-    public void scaleSprites(float scalar){
-        if(sprites != null)
-            for(int i = 0; i < sprites.length; i++)
-                this.sprites[i].setSize( this.sprites[i].getSize() * scalar );
-    }
-    
     public void setNode(Node node){
         this.node = node;
     }
     
     public Node getNode(){
         return this.node;
-    }
-
-    public Sprite[] getSprites() {
-        return sprites;
-    }
-
-    public void setSprites(Sprite[] sprites) {
-        this.sprites = sprites;
     }
 }

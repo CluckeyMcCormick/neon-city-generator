@@ -19,7 +19,6 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
-import engine.sprites.SpriteImage;
 import production.MaterialBuilder;
 import production.TextureBuilder;
 import cityorg.Cardinal;
@@ -51,17 +50,14 @@ public class BuildingFactory {
     private MaterialBook matBook;
     private ColorBook coBook;
     
-    private SpriteImage warnLight;
     private ColorRGBA warnColor;
     
     private BuildingDetail bd;
     
-    public BuildingFactory(ColorBook colo, BuildingDetail bd, SpriteImage warnLight, AssetManager am){    
+    public BuildingFactory(ColorBook colo, BuildingDetail bd, AssetManager am){    
 
         this.coBook = colo;
         this.matBook = MaterialBuilder.buildMatBook(coBook, bd, am);
-        
-        this.warnLight = warnLight;
         
         this.bd = bd;
     }
@@ -90,7 +86,6 @@ public class BuildingFactory {
         geoms[1].setMaterial(fadeMat);
         
         geoms[0].setLocalRotation( geoms[0].getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) );
-        geoms[0].updateGeometricState();
 
         geoms[1].setQueueBucket(RenderQueue.Bucket.Transparent);
 

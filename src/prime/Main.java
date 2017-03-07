@@ -9,10 +9,6 @@ import road.RoadSize;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 
-import engine.sprites.SpriteImage;
-import engine.sprites.SpriteManager;
-import engine.sprites.SpriteMesh;
-
 import cityorg.BlockDetail;
 import cityorg.CityBlock;
 import cityorg.CityStructure;
@@ -51,16 +47,9 @@ public class Main extends SimpleApplication {
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
         
-        ColorBook colob = new ColorBook( "assets/colors.json" );
+        ColorBook colob = new ColorBook( "assets/colors.json" );;
         
-        SpriteManager spriteManager = new SpriteManager(
-            1024, 1024, SpriteMesh.Strategy.KEEP_BUFFER, rootNode, assetManager 
-        );
-        getStateManager().attach(spriteManager);    
-        
-        SpriteImage spi = spriteManager.createSpriteImage("Textures/Glow2.png", true);
-        
-        BuildingFactory bfA = new BuildingFactory( colob, bdA, spi, this.assetManager);
+        BuildingFactory bfA = new BuildingFactory( colob, bdA, this.assetManager);
         
         BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1, 3, 3);
         CityBlock lumpyCB = new BlockAlley(blockDet, 64, 64, new int[]{0, 16, 0, 16}, true);
