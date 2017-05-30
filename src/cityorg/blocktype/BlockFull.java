@@ -18,8 +18,10 @@ import prime.RandomSingleton;
  */
 public class BlockFull extends CityBlock{
     
-    public BlockFull(BlockDetail blockDet, int unitLength, int unitWidth, int[] unitHeight){
-        super(blockDet, unitLength, unitWidth, unitHeight);
+    public BlockFull(BlockDetail blockDet, int[] unitHeight, 
+            int unitLength, int unitWidth, int lengthCut, int widthCut
+    ){
+        super(blockDet, unitHeight, unitLength, unitWidth, lengthCut, widthCut);
     }
     
     public void generateBuildings(BuildingFactory bf) {
@@ -50,12 +52,8 @@ public class BlockFull extends CityBlock{
             b = bf.randomFCB( width, length, height, 1);
 
             b.setComboTranslation( 
-                ulX, 
-                0, 
-                ulY,
-                b.virtualLength() / 2, 
-                b.virtualHeight() / 2, 
-                b.virtualWidth() / 2
+                ulX, 0, ulY,
+                b.virtualLength() / 2, b.virtualHeight() / 2, b.virtualWidth() / 2
             );
             
             nd.attachChild( b.getNode() );

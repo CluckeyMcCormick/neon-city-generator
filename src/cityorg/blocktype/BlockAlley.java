@@ -11,7 +11,6 @@ import cityorg.Cardinal;
 import cityorg.CityBlock;
 import cityorg.CityStructure;
 import com.jme3.scene.Node;
-import java.util.Arrays;
 import prime.RandomSingleton;
 
 /**
@@ -22,8 +21,12 @@ public class BlockAlley extends CityBlock{
     
     private boolean scramble;
     
-    public BlockAlley(BlockDetail blockDet, int unitLength, int unitWidth, int[] unitHeight, boolean scramble){
-        super(blockDet, unitLength, unitWidth, unitHeight);
+    public BlockAlley(
+            BlockDetail blockDet,  int[] unitHeight, 
+            int unitLength, int unitWidth, int lengthCut, int widthCut, 
+            boolean scramble)
+    {
+        super(blockDet, unitHeight, unitLength, unitWidth, lengthCut, widthCut );
         
         this.scramble = scramble;
     }
@@ -59,6 +62,7 @@ public class BlockAlley extends CityBlock{
         
         bd = this.getBlockDet();
         
+        //If our current section is at the ideal length, make a building
         if( width <= bd.getIdealFace() + 1 && length <= bd.getIdealFace() + 1 ){
             nd = this.getNode();
             
@@ -72,7 +76,6 @@ public class BlockAlley extends CityBlock{
             b = bf.randomFCB( width - 1, length - 1, height, heightAdj[1] );
             Node fade = bf.buildFade(b, this, orient, lightArr, ulX, ulY);
             //if(heightAdj[1] != 0)
-            b.addFeature( bf.buildStand( width - 1, length - 1, heightAdj[1] ) );
 
             switch(orient){
                 default:
@@ -101,18 +104,15 @@ public class BlockAlley extends CityBlock{
             );
             
             b.setComboTranslation( 
-                moveX, 
-                heightAdj[0], 
-                moveY,
-                0, 
-                0, 
-                0
+                moveX, heightAdj[0], moveY,
+                0, 0, 0
             );
           
             //b.addFeature(fade);
             nd.attachChild( fade );
             nd.attachChild( b.getNode() );
-        } 
+        }
+        //
         else{
             int randoX = 0;
             int randoY = 0;

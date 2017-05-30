@@ -47,13 +47,13 @@ public class Main extends SimpleApplication {
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
         
-        ColorBook colob = new ColorBook( "assets/colors.json" );;
+        ColorBook colob = new ColorBook( "assets/colors.json" );
         
         BuildingFactory bfA = new BuildingFactory( colob, bdA, this.assetManager);
         
-        BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1, 3, 3);
-        CityBlock lumpyCB = new BlockAlley(blockDet, 64, 64, new int[]{0, 16, 0, 16}, true);
-        CityBlock respCB = new BlockAlley(blockDet, 96, 96, new int[]{0, 0, 0, 0}, true);
+        BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1);
+        CityBlock lumpyCB = new BlockAlley(blockDet, new int[]{0, 16, 0, 16}, 64, 64, 3, 3, true);
+        CityBlock respCB = new BlockAlley(blockDet, new int[]{0, 0, 0, 0}, 96, 96, 3, 3, true);
         
         //RoadFactory rf = new RoadFactory( MaterialBuilder.roadMats(roadColors, assetManager) );
         

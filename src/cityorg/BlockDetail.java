@@ -13,34 +13,26 @@ import building.Building;
 public class BlockDetail {
     //If a building equals or exceeds this unitHeight, then it has warning lights
     //If negative, then no warning lights!
-    private int warnHeight;
+    private final int warnHeight;
     
     // Our ideal height for the buildings in this block
-    private int idealHeight;
+    private final int idealHeight;
     
     //The ideal length for the street-facing side of the building
-    private int idealFace;
+    private final int idealFace;
     
     //The standard height deviation for the buildings in this block
-    private int heightDeviant;
+    private final int heightDeviant;
 
     //The standard street-facing length deviation
-    private int faceDeviant;
+    private final int faceDeviant;
     
     //The standard deviation for the depth of buildings in this block
-    private int depthDeviant;
-    
-    //The depth to which the linear part of the base extends, widthwise
-    //MUST BE GREATER THAN Building.MIN_UNIT_HEIGHT
-    private int widDepth;
-    
-    //The depth to which the linear part of the base extends, lengthwise
-    //MUST BE GREATER THAN Building.MIN_UNIT_HEIGHT
-    private int lenDepth;
+    private final int depthDeviant;
     
     public BlockDetail(
         int warnHeight, int idealHeight, int idealFace, int heightDeviant, 
-        int faceDeviant, int depthDeviant, int widDepth, int lenDepth
+        int faceDeviant, int depthDeviant
     ) {
         this.warnHeight = warnHeight;
         this.idealHeight = idealHeight;
@@ -48,13 +40,6 @@ public class BlockDetail {
         this.depthDeviant = depthDeviant;
         this.idealFace = idealFace;
         this.faceDeviant = faceDeviant;
-        this.widDepth = widDepth;
-        this.lenDepth = lenDepth;
-        
-        if(this.widDepth < Building.MIN_UNIT_HEIGHT)
-            this.widDepth = Building.MIN_UNIT_HEIGHT;
-        if(this.lenDepth < Building.MIN_UNIT_HEIGHT)
-            this.lenDepth = Building.MIN_UNIT_HEIGHT;
     }
 
     public boolean hasWarn(int height){
@@ -85,14 +70,6 @@ public class BlockDetail {
 
     public int getDepthDeviant() {
         return depthDeviant;
-    }
-
-    public int getWidDepth() {
-        return widDepth;
-    }
-
-    public int getLenDepth() {
-        return lenDepth;
     }
     
 }
