@@ -5,6 +5,7 @@
 package mesh;
 
 import building.Building;
+import cityorg.CityBlock;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
@@ -22,13 +23,13 @@ public class CivilizedBase extends Mesh {
         * This is our configuration.
         * 
         *   _3==_7=====11==15
-        *   ||CC|| DD  ||EE||
+        *   ||AA|| EE  ||BB||
         *   _2==_6=====10==14
         *   ||  ||     ||  ||
-        *   ||BB|| II  ||FF||
+        *   ||HH|| II  ||FF||
         *   ||  ||     ||  ||
         *   _1==_5=====_9==13
-        *   ||AA|| HH  ||GG||
+        *   ||DD|| GG  ||CC||
         *   _0==_4=====_8==12
         * So our coordinates are grouped by squares
         * All points in AA, CC, EE, & GG are level
@@ -37,7 +38,7 @@ public class CivilizedBase extends Mesh {
         * The level indicies are crafted as such:
         * AA - 0  BB - 1  CC - 2  DD - 3  
         * 
-        * The Block Floor is split on II is split on 12 - 14
+        * The Block Floor is split on II is split on 5 - 10
         */
         Vector3f[] vertex;
         Vector2f[] texture;
@@ -104,16 +105,16 @@ public class CivilizedBase extends Mesh {
             switch(i){
                 default:
                 case 0: case 1: case 4: case 5:
-                    currHeight = virtualHeight[1];
+                    currHeight = virtualHeight[ CityBlock.POINT_D ]; //1
                     break;
                 case 2: case 3: case 6: case 7:
-                    currHeight = virtualHeight[2];
+                    currHeight = virtualHeight[ CityBlock.POINT_A ]; //2
                     break;
                 case 10: case 11: case 14: case 15:
-                    currHeight = virtualHeight[3];
+                    currHeight = virtualHeight[ CityBlock.POINT_B ]; //3
                     break;
                 case 8: case 9: case 12: case 13:
-                    currHeight = virtualHeight[0];
+                    currHeight = virtualHeight[ CityBlock.POINT_C ]; //0
                     break;
             }
             

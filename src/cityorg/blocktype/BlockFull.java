@@ -7,7 +7,6 @@ package cityorg.blocktype;
 import building.BuildingFactory;
 import building.type.FloorCellBuilding;
 import cityorg.BlockDetail;
-import cityorg.Cardinal;
 import cityorg.CityBlock;
 import com.jme3.scene.Node;
 import prime.RandomSingleton;
