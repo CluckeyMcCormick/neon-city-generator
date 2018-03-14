@@ -1,6 +1,8 @@
 package prime;
 
 import production.ColorBook;
+import production.TextureBuilder;
+
 import building.BuildingFactory;
 import building.BuildingDetail;
 import road.Road;
@@ -14,7 +16,14 @@ import cityorg.CityBlock;
 import cityorg.CityStructure;
 import cityorg.blocktype.BlockAlley;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+
 import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Quad;
+
+import com.jme3.texture.Image;
+import com.jme3.texture.Texture2D;
+
 import mesh.UpwardWarpingQuad;
 import mesh.OpenBox;
 
@@ -47,7 +56,7 @@ public class Main extends SimpleApplication {
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
         
-        ColorBook colob = new ColorBook( "assets/colors.json" );;
+        ColorBook colob = new ColorBook( "assets/colors.json" );
         
         BuildingFactory bfA = new BuildingFactory( colob, bdA, this.assetManager);
         
@@ -82,13 +91,45 @@ public class Main extends SimpleApplication {
             )
         );
         
-        gemtric.setMaterial( new Material(this.assetManager, "Common/MatDefs/Misc/Unshaded.j3md") );
+        Geometry gtric = new Geometry("wingding",
+            new Quad(2.0f, 2.0f)
+        );
+        
+        Material geomat = new Material(this.assetManager, "MatDefs/TripleHeightBuilding.j3md");
+        Image[][] generatedTex = bdA.getLitdim();
+        Texture2D litTex = new Texture2D( generatedTex[0][TextureBuilder.LIT_INDEX] );
+        Texture2D dimTex = new Texture2D( generatedTex[0][TextureBuilder.DIM_INDEX] );
+        
+        geomat.setTexture("DimMap", dimTex);
+        geomat.setTexture("LitMap", litTex);
+        
+        geomat.setColor("LitColor", new ColorRGBA(0.7294118f, 0.90588236f, 0.8862745f, 1.0f) );
+        geomat.setColor("BaseColor", new ColorRGBA(0.9764706f, 0.92941177f, 0.6392157f, 1.0f) );
+        geomat.setColor("MidColor", new ColorRGBA(0.48235294f, 0.54901963f, 0.6117647f, 1.0f) );
+        geomat.setColor("TopColor", new ColorRGBA(0.08235294f, 0.13333334f, 0.27058825f, 1.0f) );        
+
+        geomat.setFloat("MidTopBand", 0.14f);  
+        geomat.setFloat("MidTopWidth", 0.04f);  
+
+        geomat.setFloat("BaseMidBand", 0.04f);  
+        geomat.setFloat("BaseMidWidth", 0.03f);
+        
+        geomat.setFloat("Cutoff", 0.025f);
+        
+        gemtric.setMaterial( geomat );
+        gtric.setMaterial( geomat );
+        
         gemtric.setLocalTranslation(
             4 * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL,
             0,
             -20
         );
+        gtric.setLocalTranslation(
+            0, 4.0f, 0
+        );
+        
         rootNode.attachChild(gemtric);
+        rootNode.attachChild(gtric);
         rootNode.scale(0.25f);
     }
     
