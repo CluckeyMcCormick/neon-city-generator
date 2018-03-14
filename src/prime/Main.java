@@ -46,11 +46,6 @@ public class Main extends SimpleApplication {
         final int blankWidthA = 2;
         final int blankHeightA = 2;
         
-        final int dimB = 16;
-        final int widthB = 16;
-        final int blankWidthB = 2;
-        final int blankHeightB = 2;
-        
         BuildingDetail bdA = new BuildingDetail(
             widthA, dimA, 
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
@@ -60,9 +55,9 @@ public class Main extends SimpleApplication {
         
         BuildingFactory bfA = new BuildingFactory( colob, bdA, this.assetManager);
         
-        BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1, 3, 3);
-        CityBlock lumpyCB = new BlockAlley(blockDet, 64, 64, new int[]{0, 16, 0, 16}, true);
-        CityBlock respCB = new BlockAlley(blockDet, 96, 96, new int[]{0, 0, 0, 0}, true);
+        BlockDetail blockDet = new BlockDetail(-1, 12, 9, 1, 3, 1);
+        CityBlock lumpyCB = new BlockAlley(blockDet, new int[]{0, 16, 0, 16}, 32, 32, 3, 3, true);
+        CityBlock respCB = new BlockAlley(blockDet, new int[]{0, 0, 0, 0}, 96, 96, 3, 3, true);
         
         //RoadFactory rf = new RoadFactory( MaterialBuilder.roadMats(roadColors, assetManager) );
         
@@ -70,13 +65,13 @@ public class Main extends SimpleApplication {
         //rf.buildRoad(rod, 256);
         
         lumpyCB.generateBuildings(bfA);
-        respCB.generateBuildings(bfA);
+        //respCB.generateBuildings(bfA);
         
-        respCB.setLocalTranslation(-25, 0, 0);
+        //respCB.setLocalTranslation(-25, 0, 0);
         
         //rootNode.attachChild( rod.getRoad() );
         rootNode.attachChild( lumpyCB.getNode() );
-        rootNode.attachChild( respCB.getNode() );
+        //rootNode.attachChild( respCB.getNode() );
         
         Geometry gemtric = new Geometry("nottin", 
             new UpwardWarpingQuad(

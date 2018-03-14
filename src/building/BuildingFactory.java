@@ -228,30 +228,8 @@ public class BuildingFactory {
         topGeom.setLocalTranslation(0, bb.virtualHeight() + HEIGHT_ADJUST, 0);
         node.attachChild(topGeom);
         
-        bb.setNode(node);
-        
+        bb.setNode(node);    
     }
-    /**
-    if( warn ){
-            Sprite[] warnSprites;
-            Vector3f[] warnTrans;
-            
-            warnSprites = new Sprite[BOX_SIDES];  
-            
-            warnTrans = new Vector3f[4];
-            for(int i = 0; i < warnTrans.length; i++)
-            warnTrans[i] = basicTrans[i].add(0, bb.virtualHeight(), 0);
-            
-            for(int i = 0; i < BOX_SIDES; i++){
-                warnSprites[i] = new Sprite(warnLight);
-                warnSprites[i].setPosition(warnTrans[i]);
-                warnSprites[i].setColor(warnColor);
-                warnSprites[i].setSize(WARN_SIZE);
-            }
-            
-            bb.setSprites(warnSprites);
-        }
-    **/
     
     public Node buildFade(FloorCellBuilding fcb, CityBlock block, Cardinal orient, boolean[] lightArr, int ulX, int ulY){
         short[] lightRating;

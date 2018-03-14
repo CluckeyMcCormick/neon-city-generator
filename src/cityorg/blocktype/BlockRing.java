@@ -22,8 +22,10 @@ public class BlockRing extends CityBlock{
     private int widthIncursion;
     private int lengthIncursion;
     
-    public BlockRing(BlockDetail blockDet, int unitLength, int unitWidth, int[] unitHeight, int widthIncur, int lengthIncur){
-        super(blockDet, unitLength, unitWidth, unitHeight);
+    public BlockRing(BlockDetail blockDet, int[] unitHeight, 
+            int unitLength, int unitWidth, int lengthIncur, int widthIncur
+    ){
+        super(blockDet, unitHeight, unitLength, unitWidth, lengthIncur, widthIncur );
         
         this.widthIncursion = widthIncur;
         if(this.widthIncursion > unitWidth / 2)
@@ -126,12 +128,9 @@ public class BlockRing extends CityBlock{
         }
         
         b.setComboTranslation(
-            moveX, 
-            0, 
-            moveY, 
-            b.virtualLength() / 2, 
-            b.virtualHeight() / 2, 
-            b.virtualWidth() / 2);
+            moveX, 0, moveY, 
+            b.virtualLength() / 2, b.virtualHeight() / 2, b.virtualWidth() / 2
+        );
         
         nd.attachChild( b.getNode() );
     }
@@ -229,7 +228,7 @@ public class BlockRing extends CityBlock{
         BlockDetail bd = this.getBlockDet();
         //Determine how much space we have (account for border alleys)
         int frontage = 0; // - 1 is first border alley 
-        int face = -1;
+        int face;
 
         int[] reto;
         
