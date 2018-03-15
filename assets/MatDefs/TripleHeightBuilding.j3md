@@ -1,0 +1,124 @@
+MaterialDef Simple {
+    MaterialParameters {
+        Color BaseColor
+        Color MidColor
+        Color TopColor
+        Color LitColor
+        Texture2D DimMap
+        Texture2D LitMap
+        Float MidTopBand
+        Float MidTopWidth
+        Float BaseMidBand
+        Float BaseMidWidth
+        Float Cutoff
+    }
+    Technique {
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
+        VertexShaderNodes {
+            ShaderNode CommonVert {
+                Definition : CommonVert : Common/MatDefs/ShaderNodes/Common/CommonVert.j3sn
+                InputMappings {
+                    worldViewProjectionMatrix = WorldParam.WorldViewProjectionMatrix
+                    modelPosition = Global.position.xyz
+                }
+                OutputMappings {
+                    Global.position = projPosition
+                }
+            }
+            ShaderNode AttributeToVarying {
+                Definition : AttributeToVarying : Common/MatDefs/ShaderNodes/Basic/AttributeToVarying.j3sn
+                InputMappings {
+                    vec2Variable = Attr.inTexCoord
+                    vec3Variable = Attr.inPosition.xyz
+                }
+            }
+        }
+        FragmentShaderNodes {
+            ShaderNode MidTopDistance {
+                Definition : Height Gradient Distance : Shaders/HeightGradientDistance.j3sn
+                InputMappings {
+                    bandMid = MatParam.MidTopBand
+                    bandWidth = MatParam.MidTopWidth
+                    position.xyz = AttributeToVarying.vec3Variable
+                }
+            }
+            ShaderNode BaseMidDistance {
+                Definition : Height Gradient Distance : Shaders/HeightGradientDistance.j3sn
+                InputMappings {
+                    bandMid = MatParam.BaseMidBand
+                    bandWidth = MatParam.BaseMidWidth
+                    position.xyz = AttributeToVarying.vec3Variable
+                }
+            }
+            ShaderNode LitFetch {
+                Definition : TextureFetch : Common/MatDefs/ShaderNodes/Basic/TextureFetch.j3sn
+                InputMappings {
+                    textureMap = MatParam.LitMap
+                    texCoord = AttributeToVarying.vec2Variable
+                }
+            }
+            ShaderNode DimFetch {
+                Definition : TextureFetch : Common/MatDefs/ShaderNodes/Basic/TextureFetch.j3sn
+                InputMappings {
+                    textureMap = MatParam.DimMap
+                    texCoord = AttributeToVarying.vec2Variable
+                }
+            }
+            ShaderNode MidTopMix {
+                Definition : ColorMix : Common/MatDefs/ShaderNodes/Basic/ColorMix.j3sn
+                InputMappings {
+                    color1 = MatParam.MidColor
+                    color2 = MatParam.TopColor
+                    factor = MidTopDistance.distance
+                }
+            }
+            ShaderNode DimMult {
+                Definition : ColorMult : Common/MatDefs/ShaderNodes/Basic/ColorMult.j3sn
+                InputMappings {
+                    color2 = MidTopMix.outColor
+                    color1 = DimFetch.outColor
+                }
+            }
+            ShaderNode LitMult {
+                Definition : ColorMult : Common/MatDefs/ShaderNodes/Basic/ColorMult.j3sn
+                InputMappings {
+                    color1 = MatParam.LitColor
+                    color2 = LitFetch.outColor
+                }
+            }
+            ShaderNode BaseMidMix {
+                Definition : ColorMix : Common/MatDefs/ShaderNodes/Basic/ColorMix.j3sn
+                InputMappings {
+                    color1 = MatParam.BaseColor
+                    factor = BaseMidDistance.distance
+                    color2 = DimMult.outColor
+                }
+                OutputMappings {
+                }
+            }
+            ShaderNode MaxAlpha {
+                Definition : Max Alpha Color : Shaders/MaxAlpha.j3sn
+                InputMappings {
+                    color01 = LitMult.outColor
+                    color02 = BaseMidMix.outColor
+                }
+                OutputMappings {
+                }
+            }
+            ShaderNode HeightCutoff {
+                Definition : Height Color Cutoff : Shaders/HeightCutoff.j3sn
+                InputMappings {
+                    upperColor = MaxAlpha.outColor
+                    lowerColor = MatParam.BaseColor
+                    position = AttributeToVarying.vec3Variable
+                    cutoff = MatParam.Cutoff
+                }
+                OutputMappings {
+                    Global.color = outColor
+                }
+            }
+        }
+    }
+}
