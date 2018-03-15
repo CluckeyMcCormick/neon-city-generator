@@ -45,7 +45,7 @@ public abstract class CityBlock extends CityStructure {
                                                             
         We use following formula for slopes: 
     
-                        r = o + sh + tv
+            r = o + sh + tv
     
             r is the resultant point coordinate ()
             o is the origin point coordinate 
@@ -155,14 +155,13 @@ public abstract class CityBlock extends CityStructure {
     }
     
     public void generateBuildings(BuildingFactory bf){
-        Geometry[] geoms;
+        Geometry geom;
         Node nod = super.getNode();
-        geoms = bf.blockFloor( 
+        geom = bf.blockFloor( 
             unitWidth, unitLength, unitHeight, this.lenCut, this.widCut
         );
         
-        for(int i = 0; i < geoms.length; i++)
-            nod.attachChild(geoms[i]);
+        nod.attachChild(geom);
     }
     
     public int[] calcHeightAdjust(int ulX, int ulZ, int length, int width){

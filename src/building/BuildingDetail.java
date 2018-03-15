@@ -34,7 +34,18 @@ public class BuildingDetail {
     private int cellPixWidth;
     private int cellPixHeight;
     
-    //Specifies the blank areas in the window
+    //The pixel position and width of the base color to mid color gradient band
+    private int baseMidPos;
+    private int baseMidHeight;
+    
+    //The pixel position and width of the mid color to top color gradient band
+    private int midTopPos;
+    private int midTopHeight;
+    
+    //The pixel position of the base color cutoff
+    private int baseColorCutoff;
+    
+    //Specifies the blank areas in the window (the space between the windows)
     private int blanks[];
     
     //Calculated texture dimensions, per cell
@@ -45,9 +56,34 @@ public class BuildingDetail {
     private float virtWidthPerCell;
     private float virtHeightPerCell;
     
-    public BuildingDetail(int cellPixWidth, int cellPixHeight, int blanks[]){       
+    /*
+        @input cellPixWidth - the pixel width of the window "cells"
+        @input cellPixHeight - the pixel height of the window "cells"
+        @input baseMidPos - the pixel position of the base color to mid color 
+            gradient band
+        @input baseMidHeight - the pixel size of the mid color to top color 
+            gradient band
+        @input baseColorCutoff - the pixel position of the base color cutoff
+        @input midTopPos - the position of the mid color to top color 
+            gradient band
+        @input midTopHeight - the size of the mid color to top color 
+            gradient band
+    */
+    public BuildingDetail(
+        int cellPixWidth, int cellPixHeight,
+        int baseMidPos, int baseMidHeight, int baseColorCutoff,
+        int midTopPos, int midTopHeight, int blanks[]
+    ){       
         this.cellPixWidth = cellPixWidth;
         this.cellPixHeight = cellPixHeight;
+        
+        this.baseMidPos = baseMidPos;
+        this.baseMidHeight = baseMidHeight;
+        
+        this.midTopPos = midTopPos;
+        this.midTopHeight = midTopHeight;
+        
+        this.baseColorCutoff = baseColorCutoff;
         
         this.texWidthPerCell = this.cellPixWidth * CityStructure.TEXTURE_LENGTH_PER_PIXEL;
         this.texHeightPerCell = this.cellPixHeight * CityStructure.TEXTURE_LENGTH_PER_PIXEL;
@@ -115,7 +151,27 @@ public class BuildingDetail {
     public int getCellPixHeight() {
         return cellPixHeight;
     }
+    
+    public int getBaseMidPos() {
+        return baseMidPos;
+    }
 
+    public int getBaseMidHeight() {
+        return baseMidHeight;
+    }
+
+    public int getMidTopPos() {
+        return midTopPos;
+    }
+
+    public int getMidTopHeight() {
+        return midTopHeight;
+    }
+
+    public int getBaseColorCutoff() {
+        return baseColorCutoff;
+    }
+    
     public int[] getBlanks() {
         return blanks;
     }
@@ -134,5 +190,5 @@ public class BuildingDetail {
 
     public float getVirtHeightPerCell() {
         return virtHeightPerCell;
-    }
+    }    
 }

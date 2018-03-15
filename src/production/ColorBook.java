@@ -16,16 +16,16 @@ import prime.RandomSingleton;
  */
 public class ColorBook {
 
-    public final static int BUILDING_BASE_INDEX = 0;
-    public final static int BUILDING_LIGHT_INDEX = 1;
-    public final static int BUILDING_WARNING_LIGHT_INDEX = 2;
-    public final static int STREET_LIGHT_INDEX = 3;
+    public final static int LIT_INDEX = 0;
+    public final static int BASE_INDEX = 1;
+    public final static int MID_INDEX = 2;
+    public final static int TOP_INDEX = 3;
     
     private final String[] tagnames = new String[]{
-     "buildingBase", "buildingLight", "warningLight", "streetLight",
+     "LitColor", "BaseColor", "MidColor", "TopColor",
     };
     
-    private ColorRGBA[][] colorMatrix;
+    private ColorRGBA[] colors;
     
     public ColorBook(){
         this.defaultAll();
@@ -34,7 +34,7 @@ public class ColorBook {
     public ColorBook(String filePath){
         try{
             StringBuilder jsonBuild = new StringBuilder();
-            Scanner scannable = new Scanner(new File(filePath));
+            Scanner scannable = new Scanner( new File(filePath) );
 
             while(scannable.hasNextLine())
                 jsonBuild.append( scannable.nextLine() );
@@ -42,7 +42,7 @@ public class ColorBook {
             JSONObject obj = new JSONObject( jsonBuild.toString() );
             JSONArray arr;
             
-            this.colorMatrix = new ColorRGBA[tagnames.length][];
+            this.colors = new ColorRGBA[tagnames.length];
             
             for(int i = 0; i < tagnames.length; i++){
                 arr = obj.getJSONArray( tagnames[i] );
@@ -64,14 +64,14 @@ public class ColorBook {
     
     private void processArr(JSONArray arr, int index) throws JSONException{
         JSONArray current;
-        ColorRGBA[] colorArr;
+        ColorRGBA color;
         
         float red;
         float green;
         float blue;
         float alpha;
         
-        colorArr = new ColorRGBA[ arr.length() ];
+        color = null;
         
         for(int i = 0; i < arr.length(); i++){
             current = arr.getJSONArray(i);
@@ -81,115 +81,54 @@ public class ColorBook {
             blue = current.getInt(2) / 255f;
             alpha = (float) current.getDouble(3);
             
-            colorArr[i] = new ColorRGBA(red, green, blue, alpha);
+            color = new ColorRGBA(red, green, blue, alpha);
         }
         
-        this.colorMatrix[index] = colorArr;
+        this.colors[index] = color;
     }
     
     private void defaultAll(){
-        this.colorMatrix = new ColorRGBA[tagnames.length][];
+        this.colors = new ColorRGBA[tagnames.length];
         
-        this.defaultBuildingLight();
-        this.defaultBuildingBase();
-        this.defaultWarningLight();
-        this.defaultStreetLight();
+        this.defaultLitColor();
+        this.defaultBaseColor();
+        this.defaultMidColor();
+        this.defaultTopColor();
+
     }
     
-    private void defaultBuildingLight(){
-        this.colorMatrix[BUILDING_LIGHT_INDEX] = new ColorRGBA[1];
-        this.colorMatrix[BUILDING_LIGHT_INDEX][0] = new ColorRGBA( 173f / 255f, 1f, 1f, 1f );
+    private void defaultLitColor(){
+        this.colors[LIT_INDEX] = new ColorRGBA( 173f / 255f, 1f, 1f, 1f );
     }
     
-    private void defaultBuildingBase(){
-        this.colorMatrix[BUILDING_BASE_INDEX] = new ColorRGBA[1];
-        this.colorMatrix[BUILDING_BASE_INDEX][0] = new ColorRGBA( 0f, 42 / 255f, 79 / 255f, 1f );
+    private void defaultBaseColor(){
+        this.colors[BASE_INDEX] = new ColorRGBA( 193f / 255f, 0f, 0f, 1f ); 
     }
     
-    private void defaultWarningLight(){
-        this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX] = new ColorRGBA[1];
-        this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX][0] = new ColorRGBA( 0f, 1f, 1f, 1f );
+    private void defaultMidColor(){
+        this.colors[MID_INDEX] = new ColorRGBA( 0f, 1f, 1f, 1f );
     }
     
-    private void defaultStreetLight(){
-        this.colorMatrix[STREET_LIGHT_INDEX] = new ColorRGBA[1];
-        this.colorMatrix[STREET_LIGHT_INDEX][0] = new ColorRGBA( 193f / 255f, 0f, 0f, 1f ); 
+    private void defaultTopColor(){
+        this.colors[TOP_INDEX] = new ColorRGBA( 0f, 42 / 255f, 79 / 255f, 1f );
     }
     
-    /* Random Getters, Absolute Getters, and All Getters */
-    public ColorRGBA getBuildingLight(){
-        RandomSingleton rs;
-        int colorCount;
-        
-        colorCount = this.colorMatrix[BUILDING_LIGHT_INDEX].length;
-        
-        if(colorCount < 2)
-            return this.getBuildingLightAbs();
-        
-        rs = RandomSingleton.getInstance();
-        
-        return this.colorMatrix[BUILDING_LIGHT_INDEX][ rs.nextInt(colorCount) ];
+    /* All Getters */
+    
+    public ColorRGBA getLit(){
+        return this.colors[LIT_INDEX];
     }
     
-    public ColorRGBA getBuildingLightAbs(){
-        return this.colorMatrix[BUILDING_LIGHT_INDEX][0];
-    }
-    
-    public ColorRGBA[] getBuildingLightAll(){
-        return this.colorMatrix[BUILDING_LIGHT_INDEX];
-    }
-    
-    
-    public ColorRGBA getBuildingBase(){
-        return this.getBuildingBaseAbs();
-    }
-    
-    public ColorRGBA getBuildingBaseAbs(){
-        return this.colorMatrix[BUILDING_BASE_INDEX][0];
+    public ColorRGBA getBase(){
+        return this.colors[BASE_INDEX];
     }    
+
+    public ColorRGBA getMid(){
+        return this.colors[MID_INDEX];
+    } 
     
-    public ColorRGBA getWarningLight(){
-        RandomSingleton rs;
-        int colorCount;
-        
-        colorCount = this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX].length;
-        
-        if(colorCount < 2)
-            return this.getWarningLightAbs();
-        
-        rs = RandomSingleton.getInstance();
-        
-        return this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX][ rs.nextInt(colorCount) ];
-    }
+    public ColorRGBA getTop(){
+        return this.colors[TOP_INDEX];
+    } 
     
-    public ColorRGBA getWarningLightAbs(){
-        return this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX][0];
-    }
-    
-    public ColorRGBA[] getWarningLightAll(){
-        return this.colorMatrix[BUILDING_WARNING_LIGHT_INDEX];
-    }
-    
-    
-    public ColorRGBA getStreetLight(){
-        RandomSingleton rs;
-        int colorCount;
-        
-        colorCount = this.colorMatrix[STREET_LIGHT_INDEX].length;
-        
-        if(colorCount < 2)
-            return this.getStreetLightAbs();
-        
-        rs = RandomSingleton.getInstance();
-        
-        return this.colorMatrix[STREET_LIGHT_INDEX][ rs.nextInt(colorCount) ];
-    }
-    
-    public ColorRGBA getStreetLightAbs(){
-        return this.colorMatrix[STREET_LIGHT_INDEX][0];
-    }
-    
-    public ColorRGBA[] getStreetLightAll(){
-        return this.colorMatrix[STREET_LIGHT_INDEX];
-    }
 }

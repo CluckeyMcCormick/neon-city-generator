@@ -5,6 +5,7 @@
 package production;
 
 import building.BuildingDetail;
+import cityorg.CityStructure;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
 import com.jme3.material.Material;
@@ -29,125 +30,79 @@ public class MaterialBuilder {
         
         /* Stage 1: Lit Materials ~~~~~~~~~~~~~~~ */
         Image[][] generatedTex;
-        Material[][] litMats;
-        ColorRGBA[] litColors;
+        Material[] fullMats;
+        Material baseMat;
+        Material levelMat;    
+        
         Texture litTex;
+        Texture dimTex;
+        Texture flatTex;
+        
+        float temp;
         
         generatedTex = bd.getLitdim();
-        litColors = colorBook.getBuildingLightAll();
-        litMats = new Material[litColors.length][generatedTex.length];
+        fullMats = new Material[generatedTex.length];
         
-        for(int i = 0; i < litMats.length; i++)
-            for(int j = 0; j < litMats[i].length; j++){
-                litTex = new Texture2D( generatedTex[j][TextureBuilder.LIT_INDEX] );
-                litTex.setWrap(Texture.WrapMode.Repeat);
-                litMats[i][j] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-                litMats[i][j].setTransparent(true);
-                litMats[i][j].setTexture("ColorMap", litTex);     
-                litMats[i][j].getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                litMats[i][j].setColor("Color", litColors[i]);
-            }
-            
-        /* Stage 2: Other Materials ~~~~~~~~~~~~~~~ */
-        Material[][] otherMats;
-        Texture dimTex;
-        Texture baseTex;
-        Texture fadeTex;
-        Texture transTex;
-        Texture flipTransTex;
-        
-        otherMats = new Material[MaterialBook.FLIP_TRANS_INDEX + 1][]; 
-        
-        /* Stage 2a: Base Material ~~~~~~~~~~~~~~~ */
-        ColorRGBA baseColor = colorBook.getBuildingBase();
-        otherMats[MaterialBook.BASE_INDEX] = new Material[1];
-        otherMats[MaterialBook.BASE_INDEX][0] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        baseTex = am.loadTexture( new TextureKey("Textures/BlankSizer.png", false) );
-        baseTex.setWrap(Texture.WrapMode.Repeat);
-        otherMats[MaterialBook.BASE_INDEX][0].setTransparent(true);
-        otherMats[MaterialBook.BASE_INDEX][0].setTexture("ColorMap", baseTex);
-        otherMats[MaterialBook.BASE_INDEX][0].setColor("Color", baseColor);
-        
-        /* Stage 2b: Dim Materials ~~~~~~~~~~~~~~~ */
-        otherMats[MaterialBook.DIM_INDEX] = new Material[generatedTex.length];
-        for(int i = 0; i < otherMats[MaterialBook.DIM_INDEX].length; i++){
-            otherMats[MaterialBook.DIM_INDEX][i] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
+        //Generate a full material for every window style
+        for(int i = 0; i < fullMats.length; i++){
+            litTex = new Texture2D( generatedTex[i][TextureBuilder.LIT_INDEX] );
+            litTex.setWrap(Texture.WrapMode.Repeat);
+
             dimTex = new Texture2D( generatedTex[i][TextureBuilder.DIM_INDEX] );
             dimTex.setWrap(Texture.WrapMode.Repeat);
-            otherMats[MaterialBook.DIM_INDEX][i].setTransparent(true);
-            otherMats[MaterialBook.DIM_INDEX][i].setTexture("ColorMap", dimTex);
-            otherMats[MaterialBook.DIM_INDEX][i].setColor("Color", baseColor);
-        }
-        
-        /* Stage 2c: Fade Material ~~~~~~~~~~~~~~~ */
-        ColorRGBA[] fadeColor = colorBook.getStreetLightAll();
-        fadeTex = am.loadTexture( new TextureKey("Textures/BaseTrans.png", false) );
-        fadeTex.setWrap(Texture.WrapMode.Repeat);
-        otherMats[MaterialBook.FADE_INDEX] = new Material[fadeColor.length];
-        for(int i = 0; i < otherMats[MaterialBook.FADE_INDEX].length; i++){
-            otherMats[MaterialBook.FADE_INDEX][i] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-            otherMats[MaterialBook.FADE_INDEX][i].setTransparent(true);
-            otherMats[MaterialBook.FADE_INDEX][i].setTexture("ColorMap", fadeTex);
-            otherMats[MaterialBook.FADE_INDEX][i].setColor("Color", fadeColor[i]);
-            otherMats[MaterialBook.FADE_INDEX][i].getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        }
-        
-        /* Stage 2d: Trans Material ~~~~~~~~~~~~~~~ */
-        transTex = am.loadTexture( new TextureKey("Textures/LightTrans1.png", false) );
-        flipTransTex = am.loadTexture( new TextureKey("Textures/LightTrans2.png", false) );
-        transTex.setWrap(Texture.WrapMode.Repeat);
-        flipTransTex.setWrap(Texture.WrapMode.Repeat);
-        otherMats[MaterialBook.TRANS_INDEX] = new Material[fadeColor.length];
-        otherMats[MaterialBook.FLIP_TRANS_INDEX] = new Material[fadeColor.length];
-        for(int i = 0; i < otherMats[MaterialBook.FADE_INDEX].length; i++){
-            otherMats[MaterialBook.TRANS_INDEX][i] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-            otherMats[MaterialBook.TRANS_INDEX][i].setTransparent(true);
-            otherMats[MaterialBook.TRANS_INDEX][i].setTexture("ColorMap", transTex);
-            otherMats[MaterialBook.TRANS_INDEX][i].setColor("Color", fadeColor[i]);
-            otherMats[MaterialBook.TRANS_INDEX][i].getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
             
-            otherMats[MaterialBook.FLIP_TRANS_INDEX][i] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-            otherMats[MaterialBook.FLIP_TRANS_INDEX][i].setTransparent(true);
-            otherMats[MaterialBook.FLIP_TRANS_INDEX][i].setTexture("ColorMap", flipTransTex);
-            otherMats[MaterialBook.FLIP_TRANS_INDEX][i].setColor("Color", fadeColor[i]);
-            otherMats[MaterialBook.FLIP_TRANS_INDEX][i].getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-        }
+            fullMats[i] = new Material(am, "MatDefs/TripleHeightBuilding.j3md");
+            fullMats[i].setTexture("DimMap", dimTex);
+            fullMats[i].setTexture("LitMap", litTex);
         
-        return new MaterialBook(litMats, otherMats);
-    }
+            fullMats[i].setColor("LitColor", colorBook.getLit() );
+            fullMats[i].setColor("BaseColor", colorBook.getBase() );
+            fullMats[i].setColor("MidColor", colorBook.getMid() );
+            fullMats[i].setColor("TopColor", colorBook.getTop() );        
+            
+            temp = bd.getBaseMidPos() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+            fullMats[i].setFloat("BaseMidBand", temp);
+            temp = bd.getBaseMidHeight() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+            fullMats[i].setFloat("BaseMidWidth", temp);
+            
+            temp = bd.getMidTopPos() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+            fullMats[i].setFloat("MidTopBand", temp); 
+            temp = bd.getMidTopHeight() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL; 
+            fullMats[i].setFloat("MidTopWidth", temp);
 
-    public static Material[] roadMats( ColorRGBA[] colors, AssetManager am ){
-        Material[] mats;
+            temp = bd.getBaseColorCutoff() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+            fullMats[i].setFloat("Cutoff", temp);
+        }
+        /* Stage 2: Other Materials ~~~~~~~~~~~~~~~ */        
+        flatTex = am.loadTexture( new TextureKey("Textures/BlankSizer.png", false) );
+        flatTex.setWrap(Texture.WrapMode.Repeat);
+            
+        levelMat = new Material(am, "MatDefs/TripleHeightBuilding.j3md");
+        levelMat.setTexture("DimMap", flatTex);
+
+        levelMat.setColor("LitColor", colorBook.getLit() );
+        levelMat.setColor("BaseColor", colorBook.getBase() );
+        levelMat.setColor("MidColor", colorBook.getMid() );
+        levelMat.setColor("TopColor", colorBook.getTop() );        
+            
+        temp = bd.getBaseMidPos() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        levelMat.setFloat("BaseMidBand", temp);
+        temp = bd.getBaseMidHeight() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        levelMat.setFloat("BaseMidWidth", temp);
+
+        temp = bd.getMidTopPos() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        levelMat.setFloat("MidTopBand", temp); 
+        temp = bd.getMidTopHeight() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL; 
+        levelMat.setFloat("MidTopWidth", temp);
+
+        temp = bd.getBaseColorCutoff() * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        levelMat.setFloat("Cutoff", temp);
         
-        Texture smallTex;
-        Texture mediumTex; 
-        Texture largeTex;
+        baseMat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
+        baseMat.setTexture("ColorMap", flatTex);
+        baseMat.setColor("Color", colorBook.getBase());
         
-        mats = new Material[4]; 
-        
-        mats[ALLEY_INDEX] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mats[SMALL_STREET_INDEX] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mats[MEDIUM_STREET_INDEX] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mats[LARGE_STREET_INDEX] = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        
-        mats[ALLEY_INDEX].setColor("Color", colors[ALLEY_INDEX]);
-        mats[SMALL_STREET_INDEX].setColor("Color", colors[SMALL_STREET_INDEX]);
-        mats[MEDIUM_STREET_INDEX].setColor("Color", colors[MEDIUM_STREET_INDEX]); 
-        mats[LARGE_STREET_INDEX].setColor("Color", colors[LARGE_STREET_INDEX]);
-        
-        smallTex = am.loadTexture( new TextureKey("Textures/StreetSmall32.png", false) );
-        smallTex.setWrap(Texture.WrapMode.Repeat);
-        mats[SMALL_STREET_INDEX].setTexture("ColorMap", smallTex); 
-        
-        mediumTex = am.loadTexture( new TextureKey("Textures/StreetMedium64.png", false) );
-        mediumTex.setWrap(Texture.WrapMode.Repeat);
-        mats[MEDIUM_STREET_INDEX].setTexture("ColorMap", mediumTex); 
-        
-        largeTex = am.loadTexture( new TextureKey("Textures/StreetLarge96.png", false) );
-        largeTex.setWrap(Texture.WrapMode.Repeat);
-        mats[LARGE_STREET_INDEX].setTexture("ColorMap", largeTex); 
-        
-        return mats;    
+        return new MaterialBook(fullMats, baseMat, levelMat);
     }
     
 }
