@@ -1,0 +1,25 @@
+ShaderNodeDefinitions{ 
+    ShaderNodeDefinition Height Color Cutoff {      
+        Type: Fragment
+
+        Shader GLSL120: Shaders/HeightCutoff120.frag
+        
+        Documentation{
+            Colors it one color if below the cutoff, colors it differently if its above the cutoff.            
+            @input vec4 upperColor  The color if above the cutoff.
+            @input vec4 lowerColor The color if below, or equal to, cutoff.
+            @input vec3 position The position of the fragment.
+            @input float cutoff The cutoff point for the fragment.
+            @output vec4 outColor The color we output.
+        }
+        Input {
+            vec4 upperColor
+            vec4 lowerColor
+            vec3 position
+            float cutoff
+        }
+        Output {
+             vec4 outColor
+        }
+    }
+}

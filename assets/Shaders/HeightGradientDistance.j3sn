@@ -1,0 +1,23 @@
+ShaderNodeDefinitions{ 
+    ShaderNodeDefinition Height Gradient Distance {      
+        Type: Fragment
+
+        Shader GLSL120: Shaders/HeightGradientDistance120.frag
+        
+        Documentation{
+            Returns the distance from the gradient's midpoint, normalized from 0.0 to 1.0.            
+            @input vec43position The position of this pixel/fragment/whatever.
+            @input float bandMid The middle of the gradient band's position. In model terms?
+            @input float bandWidth The width of the gradient band. In model coordinates? 
+            @output float distance The distance of the fragment/pixel from the band. Normalized to 0.0 - 1.0.
+        }
+        Input {
+            vec3 position
+            float bandMid
+            float bandWidth
+        }
+        Output {
+            float distance
+        }
+    }
+}

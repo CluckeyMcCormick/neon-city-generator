@@ -1,0 +1,22 @@
+ShaderNodeDefinitions{ 
+    ShaderNodeDefinition Max Alpha Color {      
+        Type: Fragment
+
+        Shader GLSL100: Shaders/MaxAlpha100.frag
+        
+        Documentation{
+            Returns the color with the maximum amount of alpha. If the alpha levels are equal, returns
+color01.            
+            @input vec4 color01 The first color we compare. Returns this if equal.
+            @input vec4 color02 The second color we compare.
+            @output vec4 outColor The color we output - should be the input color with the maximum alpha.
+        }
+        Input {
+            vec4 color01
+            vec4 color02
+        }
+        Output {
+             vec4 outColor
+        }
+    }
+}
