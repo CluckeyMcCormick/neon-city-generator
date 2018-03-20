@@ -68,9 +68,10 @@ public class BlockAlley extends CityBlock{
             
             heightAdj = this.calcHeightAdjust(ulX, ulY, length - 1, width - 1);
             
+            /*
             if(heightAdj[1] < 2)
                 heightAdj[1] = 2;
-            
+            */
             b = bf.randomFCB( width - 1, length - 1, height, heightAdj[1] );
 
             switch(orient){

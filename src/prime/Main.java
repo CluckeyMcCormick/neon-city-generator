@@ -9,6 +9,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 
 import cityorg.BlockDetail;
+import cityorg.City;
 import cityorg.CityBlock;
 import cityorg.blocktype.BlockAlley;
 
@@ -52,17 +53,21 @@ public class Main extends SimpleApplication {
         
         BlockDetail blockRespDet = new BlockDetail(-1, 12, 9, 6, 3, 1);
         BlockDetail blockLumpyDet = new BlockDetail(-1, 14, 9, 4, 3, 1);
-        CityBlock lumpyCB = new BlockAlley(blockLumpyDet, new int[]{0, 7, 0, 7}, 38, 38, 3, 3, true);
-        CityBlock respCB = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, 96, 96, 3, 3, true);
+        CityBlock lumpyCB = new BlockAlley(blockLumpyDet, new int[]{0, 7, 0, 7}, 32, 32, 0, 0, true);
+        CityBlock respCB = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, 128, 128, 3, 3, true);
 
+        /*
         lumpyCB.generateBuildings(bf_low_band);
         respCB.generateBuildings(bf_low_band);
         respCB.setLocalTranslation(-25, 0, 0);
 
         rootNode.attachChild( lumpyCB.getNode() );
         rootNode.attachChild( respCB.getNode() );
-   
-        rootNode.scale(0.25f);
+        */
+        City the_city = new City(8, 8, 32, 32);
+        the_city.generateBlocks(blockRespDet, bf_low_band);
+        rootNode.attachChild( the_city.getNode() );
+        rootNode.scale(1.25f);
     }
     
     @Override

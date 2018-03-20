@@ -24,6 +24,7 @@ import com.jme3.asset.AssetManager;
 import prime.RandomSingleton;
 
 import mesh.CivilizedBase;
+import mesh.CivilizedWarpingQuad;
 import mesh.ClosedBox;
 
 /**
@@ -64,11 +65,18 @@ public class BuildingFactory {
         virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         virtLength = (unitLength * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
-        floor = new Geometry("block_floor", 
-            new CivilizedBase(
-                unitWidth, widDepth, unitLength, lenDepth, unitHeight
-            ) 
-        );
+        if(widDepth == 0 && lenDepth == 0)
+            floor = new Geometry("block_floor", 
+                new CivilizedWarpingQuad(
+                    unitWidth, unitLength, unitHeight
+                ) 
+            );
+        else
+            floor = new Geometry("block_floor", 
+                new CivilizedBase(
+                    unitWidth, widDepth, unitLength, lenDepth, unitHeight
+                ) 
+            );
         
         floor.setMaterial(baseMat);
         floor.setLocalRotation( 

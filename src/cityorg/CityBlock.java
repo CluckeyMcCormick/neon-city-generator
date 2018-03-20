@@ -62,9 +62,9 @@ public abstract class CityBlock extends CityStructure {
     represented as percentages of our distance from the origin points. So, at the
     origin point would be 0, at the other point would be 1.
     */
-    public static final int POINT_A = 0;
+    public static final int POINT_A = 2; //0;
     public static final int POINT_B = 1;
-    public static final int POINT_C = 2;
+    public static final int POINT_C = 0; //2;
     public static final int POINT_D = 3;
     
     public static final int MIN_FRONT = Building.MIN_UNIT_HEIGHT;
@@ -177,28 +177,21 @@ public abstract class CityBlock extends CityStructure {
         int min = Integer.MAX_VALUE;
         int curr;
         
-        System.out.println( "Building at " + ulX + " --- " + ulZ );
-        
         for(int i = 0; i < coords.length; i += 2){
-            
-            System.out.println( "\t" + coords[i] + " //// " + coords[i +1] );
-            
             curr = (int) heightGet(coords[i], coords[i + 1]);
-            
-            System.out.println( " res: " + curr );
             oldHeight[i / 2] = curr;
-            
             min = Math.min(min, curr);
         }
         
         if(min < 0)
             min += Math.abs(min);
         
-        System.out.println( "Building at " + coords[0] + " --- " + coords[1] + " complete \n" );
-        
         return new int[]{
             min, 
-            Math.max( Math.max(oldHeight[0], oldHeight[1]), Math.max(oldHeight[2], oldHeight[3]) ) - min
+            Math.max( 
+                Math.max(oldHeight[0], oldHeight[1]), 
+                Math.max(oldHeight[2], oldHeight[3]) 
+            ) - min
         };
     }
     
