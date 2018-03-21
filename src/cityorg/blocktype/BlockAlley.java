@@ -21,10 +21,10 @@ public class BlockAlley extends CityBlock{
     private boolean scramble;
     
     public BlockAlley(
-        BlockDetail blockDet,  int[] unitHeight, int unitLength, int unitWidth, 
-        int lengthCut, int widthCut, boolean scramble
+        BlockDetail blockDet,  int[] unitHeight, int[] cardinalCuts,
+        int unitLength, int unitWidth, boolean scramble
     ){
-        super(blockDet, unitHeight, unitLength, unitWidth, lengthCut, widthCut );
+        super(blockDet, unitHeight, cardinalCuts, unitLength, unitWidth);
         
         this.scramble = scramble;
     }
@@ -52,7 +52,7 @@ public class BlockAlley extends CityBlock{
         int width = lrY - ulY;
         int length = lrX - ulX;
         
-        int[] heightAdj;
+        float heightAdj;
         int height;
         
         int moveX;
@@ -68,11 +68,7 @@ public class BlockAlley extends CityBlock{
             
             heightAdj = this.calcHeightAdjust(ulX, ulY, length - 1, width - 1);
             
-            /*
-            if(heightAdj[1] < 2)
-                heightAdj[1] = 2;
-            */
-            b = bf.randomFCB( width - 1, length - 1, height, heightAdj[1] );
+            b = bf.randomFCB( width - 1, length - 1, height, heightAdj );
 
             switch(orient){
                 default:
@@ -95,7 +91,7 @@ public class BlockAlley extends CityBlock{
             }
             
             b.setComboTranslation( 
-                moveX, heightAdj[0], moveY,
+                moveX, 0, moveY,
                 0, 0, 0
             );
           

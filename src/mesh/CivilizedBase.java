@@ -5,6 +5,7 @@
 package mesh;
 
 import building.Building;
+import cityorg.Cardinal;
 import cityorg.CityBlock;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -18,7 +19,7 @@ import com.jme3.util.BufferUtils;
  */
 public class CivilizedBase extends Mesh {
     
-    public CivilizedBase(int unitLength, int lenDepth, int unitWidth, int widDepth, int[] unitHeight){
+    public CivilizedBase(int[] unitHeights, int[] cardinalCuts, int unitLength, int unitWidth){
     /**
         * This is our configuration.
         * 
@@ -48,20 +49,26 @@ public class CivilizedBase extends Mesh {
         float[] lens = new float[4];
         float[] wids = new float[4];
         
+        int westCut = cardinalCuts[Cardinal.WEST.value / 2];
+        int eastCut = cardinalCuts[Cardinal.EAST.value / 2];
+        
+        int southCut = cardinalCuts[Cardinal.SOUTH.value / 2];
+        int northCut = cardinalCuts[Cardinal.NORTH.value / 2];
+        
         lens[0] = 0;
-        lens[1] = widDepth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        lens[2] = (unitLength - widDepth) * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        lens[1] = westCut * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        lens[2] = (unitLength - eastCut) * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         lens[3] = unitLength * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         
         wids[0] = 0;
-        wids[1] = lenDepth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        wids[2] = (unitWidth - lenDepth) * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        wids[1] = northCut * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        wids[2] = (unitWidth - southCut) * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         wids[3] = unitWidth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
      
-        virtualHeight = new float[unitHeight.length];
+        virtualHeight = new float[unitHeights.length];
         
         for(int i = 0; i < virtualHeight.length; i++)
-            virtualHeight[i] = unitHeight[i] * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+            virtualHeight[i] = unitHeights[i] * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
             
         int[] indexes = new int[]{
             //AA-1      AA-2
@@ -85,13 +92,13 @@ public class CivilizedBase extends Mesh {
         };
         
         texLen = new float[]{ 
-            0, widDepth / (float) unitLength,
-            (unitLength - widDepth) / (float) unitLength, 1
+            0, westCut / (float) unitLength,
+            (unitLength - eastCut) / (float) unitLength, 1
         };
         
         texWidth = new float[]{ 
-            0, lenDepth / (float) unitWidth,
-            (unitWidth - lenDepth) / (float) unitWidth, 1
+            0, southCut / (float) unitWidth,
+            (unitWidth - northCut) / (float) unitWidth, 1
         };
         
         vertex = new Vector3f[16];
@@ -108,13 +115,13 @@ public class CivilizedBase extends Mesh {
                     currHeight = virtualHeight[ CityBlock.POINT_D ]; //1
                     break;
                 case 2: case 3: case 6: case 7:
-                    currHeight = virtualHeight[ CityBlock.POINT_A ]; //2
+                    currHeight = virtualHeight[ CityBlock.POINT_C ]; //2
                     break;
                 case 10: case 11: case 14: case 15:
                     currHeight = virtualHeight[ CityBlock.POINT_B ]; //3
                     break;
                 case 8: case 9: case 12: case 13:
-                    currHeight = virtualHeight[ CityBlock.POINT_C ]; //0
+                    currHeight = virtualHeight[ CityBlock.POINT_A ]; //0
                     break;
             }
             

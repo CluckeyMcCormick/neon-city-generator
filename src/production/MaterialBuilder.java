@@ -102,11 +102,11 @@ public class MaterialBuilder {
         baseMat.setTexture("ColorMap", flatTex);
         baseMat.setColor("Color", colorBook.getBase());
         
-        /*
-        baseMat.setColor("Color", ColorRGBA.Green);
+        
+        baseMat.setColor("Color", ColorRGBA.Cyan);
         baseMat.getAdditionalRenderState().setWireframe(true);
-        baseMat.getAdditionalRenderState().setLineWidth(4);
-        */
+        baseMat.getAdditionalRenderState().setLineWidth(1);
+       
         return new MaterialBook(fullMats, baseMat, levelMat);
     }
     

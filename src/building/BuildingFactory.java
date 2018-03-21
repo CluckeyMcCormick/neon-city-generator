@@ -53,7 +53,7 @@ public class BuildingFactory {
         this.bd = bd;
     }
     
-    public Geometry blockFloor( int unitWidth, int unitLength, int[] unitHeight, int widDepth, int lenDepth){
+    public Geometry blockFloor(int[] unitHeights, int[] cardinalCuts, int unitWidth, int unitLength ){
         Geometry floor;
         Material baseMat;
         
@@ -65,16 +65,18 @@ public class BuildingFactory {
         virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         virtLength = (unitLength * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
-        if(widDepth == 0 && lenDepth == 0)
+        if(cardinalCuts[0] == 0 && cardinalCuts[1] == 0 &&
+            cardinalCuts[2] == 0 && cardinalCuts[3] == 0
+        )
             floor = new Geometry("block_floor", 
                 new CivilizedWarpingQuad(
-                    unitWidth, unitLength, unitHeight
+                    unitWidth, unitLength, unitHeights
                 ) 
             );
         else
             floor = new Geometry("block_floor", 
                 new CivilizedBase(
-                    unitWidth, widDepth, unitLength, lenDepth, unitHeight
+                    unitHeights, cardinalCuts, unitWidth, unitLength
                 ) 
             );
         
@@ -93,7 +95,7 @@ public class BuildingFactory {
         return this.randomFCB(unitWidth, unitWidth, unitHeight, 0);
     }
     
-    public FloorCellBuilding randomFCB(int unitLength, int unitWidth, int unitHeight, int heightAdjust){
+    public FloorCellBuilding randomFCB(int unitLength, int unitWidth, int unitHeight, float heightAdjust){
         FloorCellBuilding fcb;
         
         if( unitHeight < Building.MIN_UNIT_HEIGHT )
@@ -106,7 +108,7 @@ public class BuildingFactory {
         return fcb;
     }
     
-    private void buildFCB(FloorCellBuilding bb, int heightAdjust){
+    private void buildFCB(FloorCellBuilding bb, float heightAdjust){
 
         Material fullMat = this.matBook.getFullMat(WindowStyle.STANDARD);
         
@@ -132,7 +134,7 @@ public class BuildingFactory {
         
         fullGeom = new Geometry("building_full", fullBox);
         fullGeom.setMaterial(fullMat);
-        //fullGeom.setLocalTranslation(0, HEIGHT_ADJUST, 0);
+        fullGeom.setLocalTranslation(0, HEIGHT_ADJUST, 0);
         node.attachChild(fullGeom);
         
         bb.setNode(node);    

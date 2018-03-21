@@ -9,13 +9,21 @@ package cityorg;
  * @author frick
  */
 public enum Cardinal {
-    NONE,
-    NORTH_WEST,
-    NORTH,
-    NORTH_EAST,
-    EAST,
-    SOUTH_EAST,
-    SOUTH,
-    SOUTH_WEST,
-    WEST
+    NONE (-1),
+    
+    EAST (0),
+    NORTH_EAST (1),
+    NORTH (2),
+    NORTH_WEST (3),
+    WEST (4),
+    SOUTH_WEST (5),
+    SOUTH (6),
+    SOUTH_EAST(7);
+
+
+    public final int value;
+    
+    Cardinal(int value){
+        this.value = value;
+    }
 }

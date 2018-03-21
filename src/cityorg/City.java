@@ -56,7 +56,7 @@ public class City extends CityStructure{
          
         for(int x = 0; x < intersectHeights.length; x++)
             for(int y = 0; y < intersectHeights[x].length; y++)
-                intersectHeights[x][y] = rand.nextInt(8);
+                intersectHeights[x][y] = rand.nextInt(16);
     }
     
     private void generateRoads(){
@@ -65,7 +65,7 @@ public class City extends CityStructure{
                 
         for(int y = 0; y < roadSizes.length; y++)
             for(int x = 0; x < roadSizes[y].length; x++)
-                roadSizes[y][x] = vals[ rand.nextInt(vals.length) ]; //RoadSize.LARGE_STREET; 
+                roadSizes[y][x] = RoadSize.MEDIUM_STREET; //vals[ rand.nextInt(vals.length) ]; //RoadSize.LARGE_STREET; 
     }
     
     public void generateBlocks(BlockDetail detail, BuildingFactory factory){
@@ -84,7 +84,6 @@ public class City extends CityStructure{
             for(int y = 0; y < blockWidth; y++){
                 blockHeight = new int[4];
                 
-                
                 blockHeight[0] = intersectHeights[x + 1][y + 1];
                 blockHeight[1] = intersectHeights[x + 1][y];        
                 blockHeight[2] = intersectHeights[x][y];
@@ -99,8 +98,14 @@ public class City extends CityStructure{
                 bLength = pbUnitLength - (adjustX + (roadSizes[ty + 1][x + 1].unitWidth / 2) );
                 bWidth = pbUnitWidth - (adjustY + (roadSizes[ty + 2][x].unitWidth / 2));
                 
-                block = new BlockAlley(detail, blockHeight, bLength, bWidth, 0, 0, true);
-                //block = new BlockBlank(detail, blockHeight, bLength, bWidth, 0, 0);
+                int[] cuts = new int[]{0, 8, 0, 8};
+                cuts = new int[]{8, 8, 8, 8};
+                
+                int[] no_cuts = new int[]{0, 0, 0, 0};
+                if(x >= blockLength / 2)
+                    block = new BlockBlank(detail, blockHeight, cuts, bLength, bWidth);
+                else
+                    block = new BlockBlank(detail, blockHeight, no_cuts, bLength, bWidth);
                 
                 block.generateBuildings(factory);
                 block.setComboTranslation(
@@ -109,6 +114,5 @@ public class City extends CityStructure{
                 );
                 this.addFeature( block.getNode() );
             }
-                
     }
 }

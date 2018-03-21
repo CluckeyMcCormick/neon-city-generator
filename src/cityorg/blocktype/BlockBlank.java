@@ -15,8 +15,8 @@ import cityorg.CityBlock;
  */
 public class BlockBlank extends CityBlock {
     
-    public BlockBlank(BlockDetail bd, int[] unitHeight, int unitLength, int unitWidth, int lengthCut, int widthCut) {
-        super(bd, unitHeight, unitLength, unitWidth, lengthCut, widthCut);
+    public BlockBlank(BlockDetail bd, int[] unitHeight, int[] cardinalCuts, int unitLength, int unitWidth) {
+        super(bd, unitHeight, cardinalCuts, unitLength, unitWidth);
     }
     
 }

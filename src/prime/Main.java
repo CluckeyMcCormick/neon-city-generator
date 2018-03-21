@@ -12,6 +12,12 @@ import cityorg.BlockDetail;
 import cityorg.City;
 import cityorg.CityBlock;
 import cityorg.blocktype.BlockAlley;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.debug.Arrow;
 
 
 /**
@@ -53,8 +59,8 @@ public class Main extends SimpleApplication {
         
         BlockDetail blockRespDet = new BlockDetail(-1, 12, 9, 6, 3, 1);
         BlockDetail blockLumpyDet = new BlockDetail(-1, 14, 9, 4, 3, 1);
-        CityBlock lumpyCB = new BlockAlley(blockLumpyDet, new int[]{0, 7, 0, 7}, 32, 32, 0, 0, true);
-        CityBlock respCB = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, 128, 128, 3, 3, true);
+        CityBlock lumpyCB = new BlockAlley(blockLumpyDet, new int[]{0, 7, 0, 7}, new int[]{0, 7, 0, 7}, 32, 32, true);
+        CityBlock respCB = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, new int[]{0, 0, 0, 0}, 128, 128, true);
 
         /*
         lumpyCB.generateBuildings(bf_low_band);
@@ -67,7 +73,9 @@ public class Main extends SimpleApplication {
         City the_city = new City(8, 8, 32, 32);
         the_city.generateBlocks(blockRespDet, bf_low_band);
         rootNode.attachChild( the_city.getNode() );
-        rootNode.scale(1.25f);
+        rootNode.scale(.25f);
+        
+        attachCoordinateAxes(new Vector3f(0,0,0));
     }
     
     @Override
@@ -79,5 +87,26 @@ public class Main extends SimpleApplication {
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
     }
-    
+  
+    private void attachCoordinateAxes(Vector3f pos) {
+        Arrow arrow = new Arrow(Vector3f.UNIT_X);
+        putShape(arrow, ColorRGBA.Red).setLocalTranslation(pos);
+
+        arrow = new Arrow(Vector3f.UNIT_Y);
+        putShape(arrow, ColorRGBA.Green).setLocalTranslation(pos);
+
+        arrow = new Arrow(Vector3f.UNIT_Z);
+        putShape(arrow, ColorRGBA.Blue).setLocalTranslation(pos);
+    }
+
+    private Geometry putShape(Mesh shape, ColorRGBA color) {
+        Geometry g = new Geometry("coordinate axis", shape);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.getAdditionalRenderState().setWireframe(true);
+        mat.getAdditionalRenderState().setLineWidth(4);
+        mat.setColor("Color", color);
+        g.setMaterial(mat);
+        rootNode.attachChild(g);
+        return g;
+    }
 }

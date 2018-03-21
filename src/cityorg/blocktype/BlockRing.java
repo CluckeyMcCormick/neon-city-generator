@@ -22,10 +22,10 @@ public class BlockRing extends CityBlock{
     private int widthIncursion;
     private int lengthIncursion;
     
-    public BlockRing(BlockDetail blockDet, int[] unitHeight, 
-            int unitLength, int unitWidth, int lengthIncur, int widthIncur
+    public BlockRing(BlockDetail blockDet, int[] unitHeight, int[] cardinalCuts,
+            int unitLength, int unitWidth, int widthIncur, int lengthIncur
     ){
-        super(blockDet, unitHeight, unitLength, unitWidth, lengthIncur, widthIncur );
+        super(blockDet, unitHeight, cardinalCuts, unitLength, unitWidth);
         
         this.widthIncursion = widthIncur;
         if(this.widthIncursion > unitWidth / 2)

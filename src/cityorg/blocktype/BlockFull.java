@@ -17,10 +17,10 @@ import prime.RandomSingleton;
  */
 public class BlockFull extends CityBlock{
     
-    public BlockFull(BlockDetail blockDet, int[] unitHeight, 
-            int unitLength, int unitWidth, int lengthCut, int widthCut
+    public BlockFull(BlockDetail blockDet, int[] unitHeight, int[] cardinalCuts,
+            int unitLength, int unitWidth
     ){
-        super(blockDet, unitHeight, unitLength, unitWidth, lengthCut, widthCut);
+        super(blockDet, unitHeight, cardinalCuts, unitLength, unitWidth);
     }
     
     public void generateBuildings(BuildingFactory bf) {
