@@ -14,7 +14,7 @@ public enum RoadSize {
     ALLEY (2), // (16)
     SMALL_STREET (4), // ( 4 + [12] ) + ( [12] + 4 )
     MEDIUM_STREET (6), // ( 8 + [12 + 12] ) + ( [12 + 12] + 8 )
-    LARGE_STREET (10); // (12 + [12 + 12 + 12] ) + ( [12 + 12 + 12] + 12)
+    LARGE_STREET (8); // (12 + [12 + 12 + 12] ) + ( [12 + 12 + 12] + 12)
     
     public static final int LENGTH_CONSTANT = CityStructure.GOLDEN_PIXEL_COUNT;
     

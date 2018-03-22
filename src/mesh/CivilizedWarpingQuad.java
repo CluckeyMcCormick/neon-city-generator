@@ -48,6 +48,39 @@ public class CivilizedWarpingQuad extends Mesh{
         this.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indextrious));
         this.updateBound();
     }
+
+    public CivilizedWarpingQuad(int unitLength, int unitWidth, int unitHeight){
+        Vector3f[] vertextrious;
+        Vector2f[] texturious;
+        int[] indextrious;
+        
+        float fx = unitLength * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unitWidth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fy = unitHeight * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        
+        vertextrious = new Vector3f[]{
+            new Vector3f(0, fy, 0),
+            new Vector3f(0, fy, fz),
+            new Vector3f(fx, fy, fz),
+            new Vector3f(fx, fy, 0)
+        };
+        
+        texturious = new Vector2f[]{
+            new Vector2f(0, 0),
+            new Vector2f(0, 1),
+            new Vector2f(1, 1),
+            new Vector2f(1, 0)
+        };
+        
+        indextrious = new int[]{
+            2, 3, 0,    1, 2, 0
+        };
+        
+        this.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertextrious));
+        this.setBuffer(VertexBuffer.Type.TexCoord, 2, BufferUtils.createFloatBuffer(texturious));
+        this.setBuffer(VertexBuffer.Type.Index,    3, BufferUtils.createIntBuffer(indextrious));
+        this.updateBound();
+    }
     
     public CivilizedWarpingQuad(int unitLength, int unitWidth, int[] height){
         Vector3f[] vertextrious;

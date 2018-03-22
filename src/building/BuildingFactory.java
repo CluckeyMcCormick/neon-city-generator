@@ -88,6 +88,56 @@ public class BuildingFactory {
         
         return floor;
     }
+
+    public Geometry intersection(int unitHeight, int unitWidth, int unitLength ){
+        Geometry sect;
+        Material baseMat;
+        
+        float virtWidth;
+        
+        baseMat = this.matBook.getBaseMat();
+        
+        virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        
+        sect = new Geometry("intersection", 
+            new CivilizedWarpingQuad(
+                unitWidth, unitLength, unitHeight
+            ) 
+        );
+        
+        sect.setMaterial(baseMat);
+        sect.setLocalRotation( 
+            sect.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
+        );
+        sect.setLocalTranslation(0, 0, virtWidth);     
+        
+        return sect;
+    }
+
+    public Geometry road(int[] unitHeights, int unitWidth, int unitLength ){
+        Geometry road;
+        Material baseMat;
+        
+        float virtWidth;
+        
+        baseMat = this.matBook.getBaseMat();
+        
+        virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        
+        road = new Geometry("road", 
+            new CivilizedWarpingQuad(
+                unitWidth, unitLength, unitHeights
+            ) 
+        );
+        
+        road.setMaterial(baseMat);
+        road.setLocalRotation( 
+            road.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
+        );
+        road.setLocalTranslation(0, 0, virtWidth);     
+        
+        return road;
+    }
     
     //In the actual program, we'll be creating buildings to fit gaps
     //So we'll know the width - the number of units - but not the height.

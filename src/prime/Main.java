@@ -52,28 +52,18 @@ public class Main extends SimpleApplication {
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
         
-        ColorBook colob = new ColorBook( "assets/colors.json" );
+        ColorBook colob = new ColorBook( "assets/base_colors.json" );
+        colob = new ColorBook( "assets/banff_colors.json" );
         
-        BuildingFactory bf_low_band = new BuildingFactory( colob, bd_low_band, this.assetManager);
-        BuildingFactory bf_high_band = new BuildingFactory( colob, bd_high_band, this.assetManager);
-        
+        BuildingFactory bf_low_band = new BuildingFactory( colob, bd_low_band, this.assetManager);        
         BlockDetail blockRespDet = new BlockDetail(-1, 12, 9, 6, 3, 1);
-        BlockDetail blockLumpyDet = new BlockDetail(-1, 14, 9, 4, 3, 1);
-        CityBlock lumpyCB = new BlockAlley(blockLumpyDet, new int[]{0, 7, 0, 7}, new int[]{0, 7, 0, 7}, 32, 32, true);
-        CityBlock respCB = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, new int[]{0, 0, 0, 0}, 128, 128, true);
 
-        /*
-        lumpyCB.generateBuildings(bf_low_band);
-        respCB.generateBuildings(bf_low_band);
-        respCB.setLocalTranslation(-25, 0, 0);
-
-        rootNode.attachChild( lumpyCB.getNode() );
-        rootNode.attachChild( respCB.getNode() );
-        */
-        City the_city = new City(8, 8, 32, 32);
-        the_city.generateBlocks(blockRespDet, bf_low_band);
+        City the_city = new City(16, 12, 32, 32);
+        the_city.build(blockRespDet, bf_low_band);
         rootNode.attachChild( the_city.getNode() );
-        rootNode.scale(.25f);
+        rootNode.scale(1f);
+        this.setDisplayFps(false);
+        this.setDisplayStatView(false);
         
         attachCoordinateAxes(new Vector3f(0,0,0));
     }

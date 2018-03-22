@@ -8,6 +8,7 @@ package cityorg;
 import building.BuildingFactory;
 import cityorg.blocktype.BlockAlley;
 import cityorg.blocktype.BlockBlank;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import prime.RandomSingleton;
 
@@ -25,7 +26,9 @@ public class City extends CityStructure{
     private final int pbUnitWidth;
 
     private int[][] intersectHeights;
-    private RoadSize[][] roadSizes;
+    
+    private RoadSize[] horizSizes;
+    private RoadSize[] vertSizes;
     
     public City(int blockLength, int blockWidth, int pbUnitLength, int pbUnitWidth) {
         this.blockLength = blockLength;
@@ -36,14 +39,8 @@ public class City extends CityStructure{
         //Intersection Heights are adressed x, y
         intersectHeights = new int[blockLength + 1][blockWidth + 1];
         
-        //Road sizes are adressed y, x
-        roadSizes = new RoadSize[3 + (2 * (blockWidth - 1))][];
-        for(int i = 0; i < roadSizes.length; i++){
-            if( i % 2 == 0)
-                roadSizes[i] = new RoadSize[blockLength];
-            else
-                roadSizes[i] = new RoadSize[blockLength + 1];
-        }
+        horizSizes = new RoadSize[this.blockWidth + 1];
+        vertSizes = new RoadSize[this.blockLength + 1];
         
         this.generateHeights();
         this.generateRoads();
@@ -53,22 +50,41 @@ public class City extends CityStructure{
     
     private void generateHeights(){
         RandomSingleton rand = RandomSingleton.getInstance();
-         
+        //We have a max grading the hills are allowed to be 
+        double max_grade = Math.floor(.2275);
+
         for(int x = 0; x < intersectHeights.length; x++)
             for(int y = 0; y < intersectHeights[x].length; y++)
-                intersectHeights[x][y] = rand.nextInt(16);
+                intersectHeights[x][y] = getHeight(x, y, max_grade);
+    }
+    
+    private int getHeight(int x, int y, double grade){
+        return x * 7;
     }
     
     private void generateRoads(){
         RandomSingleton rand = RandomSingleton.getInstance();
         RoadSize[] vals = RoadSize.values();
                 
-        for(int y = 0; y < roadSizes.length; y++)
-            for(int x = 0; x < roadSizes[y].length; x++)
-                roadSizes[y][x] = RoadSize.MEDIUM_STREET; //vals[ rand.nextInt(vals.length) ]; //RoadSize.LARGE_STREET; 
+        for(int y = 0; y < horizSizes.length; y++)
+            horizSizes[y] = vals[ rand.nextInt(vals.length) ];
+        
+        for(int x = 0; x < vertSizes.length; x++)
+            vertSizes[x] = vals[ rand.nextInt(vals.length) ]; 
+        
+        //vals[ rand.nextInt(vals.length) ];
     }
     
-    public void generateBlocks(BlockDetail detail, BuildingFactory factory){
+    public void build(BlockDetail detail, BuildingFactory factory){
+        //Step 1: Generate the blocks, block by block
+        this.buildBlocks(detail, factory);
+        //Step 2: Generate the intersections, intersection by intersection
+        this.buildIntersections(factory);
+        //Step 3: Generate the roads
+        this.buildRoads(factory);
+    }
+    
+    private void buildBlocks(BlockDetail detail, BuildingFactory factory){
         CityBlock block;
         int[] blockHeight;
         
@@ -89,23 +105,15 @@ public class City extends CityStructure{
                 blockHeight[2] = intersectHeights[x][y];
                 blockHeight[3] = intersectHeights[x][y + 1];
                 
-                //"True" y - one that we've adjusted for
-                ty = y * 2;
-                
-                adjustX = roadSizes[ty + 1][x].unitWidth / 2; 
-                adjustY = roadSizes[ty][x].unitWidth / 2;
-                
-                bLength = pbUnitLength - (adjustX + (roadSizes[ty + 1][x + 1].unitWidth / 2) );
-                bWidth = pbUnitWidth - (adjustY + (roadSizes[ty + 2][x].unitWidth / 2));
-                
-                int[] cuts = new int[]{0, 8, 0, 8};
-                cuts = new int[]{8, 8, 8, 8};
-                
+                //Formulas for "roadSizes" arrays
+                adjustX = vertSizes[x].unitWidth / 2; 
+                adjustY = horizSizes[y].unitWidth / 2;
+                bLength = pbUnitLength - (adjustX + (vertSizes[x + 1].unitWidth / 2) );
+                bWidth = pbUnitWidth - (adjustY + (horizSizes[y + 1].unitWidth / 2));
+
                 int[] no_cuts = new int[]{0, 0, 0, 0};
-                if(x >= blockLength / 2)
-                    block = new BlockBlank(detail, blockHeight, cuts, bLength, bWidth);
-                else
-                    block = new BlockBlank(detail, blockHeight, no_cuts, bLength, bWidth);
+                block = new BlockAlley(detail, blockHeight, no_cuts, bLength, bWidth, true);
+                //block = new BlockBlank(detail, blockHeight, no_cuts, bLength, bWidth);
                 
                 block.generateBuildings(factory);
                 block.setComboTranslation(
@@ -114,5 +122,80 @@ public class City extends CityStructure{
                 );
                 this.addFeature( block.getNode() );
             }
+    }
+    
+    private void buildIntersections(BuildingFactory factory){
+        Geometry section;
+        
+        float newX;
+        float newZ;
+        
+        int width;
+        int length;
+        
+        for(int x = 0; x < intersectHeights.length; x++)
+            for(int y = 0; y < intersectHeights[x].length; y++){
+                width = horizSizes[y].unitWidth;
+                length = vertSizes[x].unitWidth;
+                
+                section = factory.intersection(intersectHeights[x][y], width, length);
+                
+                newX = (x * pbUnitLength - (length / 2)) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+                newZ = (y * pbUnitWidth - (width / 2)) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+       
+                section.move(newX, 0, newZ);
+                this.addFeature(section);
+            }
+    }
+    
+    private void buildRoads(BuildingFactory factory){
+        Geometry section;
+        
+        float newX;
+        float newZ;
+        
+        int width;
+        int length;
+        int[] heights;
+        
+        for(int x = 0; x < vertSizes.length; x++){
+            length = vertSizes[x].unitWidth;
+            
+            for(int y = 0; y < horizSizes.length - 1; y++){
+                width = pbUnitWidth - (horizSizes[y].unitWidth / 2) - (horizSizes[y + 1].unitWidth / 2);
+                heights = new int[]{ 
+                    this.intersectHeights[x][y + 1], this.intersectHeights[x][y],
+                    this.intersectHeights[x][y], this.intersectHeights[x][y + 1]
+                };
+                
+                section = factory.road(heights, width, length);
+                
+                newX = (x * pbUnitLength - length / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+                newZ = (y * pbUnitWidth + horizSizes[y].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+                
+                section.move(newX, 0, newZ);
+                this.addFeature(section);
+            }
+        }
+
+        for(int y = 0; y < horizSizes.length; y++){
+            width = horizSizes[y].unitWidth;
+            
+            for(int x = 0; x < vertSizes.length - 1; x++){
+                length = pbUnitLength - (vertSizes[x].unitWidth / 2) - (vertSizes[x + 1].unitWidth / 2);
+                heights = new int[]{ 
+                    this.intersectHeights[x + 1][y], this.intersectHeights[x + 1][y],
+                    this.intersectHeights[x][y], this.intersectHeights[x][y]
+                };
+                
+                section = factory.road(heights, width, length);
+                
+                newX = (x * pbUnitLength + vertSizes[x].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+                newZ = (y * pbUnitWidth - width / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
+                
+                section.move(newX, 0, newZ);
+                this.addFeature(section);
+            }
+        }
     }
 }
