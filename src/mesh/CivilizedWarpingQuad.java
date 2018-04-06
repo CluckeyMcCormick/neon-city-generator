@@ -17,18 +17,18 @@ import com.jme3.util.BufferUtils;
  */
 public class CivilizedWarpingQuad extends Mesh{
 
-    public CivilizedWarpingQuad(int unitLength, int unitWidth){
+    public CivilizedWarpingQuad(int unit_x, int unit_z){
         Vector3f[] vertextrious;
         Vector2f[] texturious;
         int[] indextrious;
         
-        float fx = unitLength * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fy = unitWidth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, 0, 0),
-            new Vector3f(0, 0, fy),
-            new Vector3f(fx, 0, fy),
+            new Vector3f(0, 0, fz),
+            new Vector3f(fx, 0, fz),
             new Vector3f(fx, 0, 0)
         };
         
@@ -49,14 +49,14 @@ public class CivilizedWarpingQuad extends Mesh{
         this.updateBound();
     }
 
-    public CivilizedWarpingQuad(int unitLength, int unitWidth, int unitHeight){
+    public CivilizedWarpingQuad(int unit_x, int unit_z, int unit_height){
         Vector3f[] vertextrious;
         Vector2f[] texturious;
         int[] indextrious;
         
-        float fx = unitLength * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fz = unitWidth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fy = unitHeight * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fy = unit_height * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, fy, 0),
@@ -82,13 +82,13 @@ public class CivilizedWarpingQuad extends Mesh{
         this.updateBound();
     }
     
-    public CivilizedWarpingQuad(int unitLength, int unitWidth, int[] height){
+    public CivilizedWarpingQuad(int unit_x, int unit_z, int[] height){
         Vector3f[] vertextrious;
         Vector2f[] texturious;
         int[] indextrious;
 
-        float fx = unitLength * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fy = unitWidth * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         
         float[] float_height = new float[4];
         for(int i = 0; i < float_height.length; i++)
@@ -96,8 +96,8 @@ public class CivilizedWarpingQuad extends Mesh{
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, float_height[3], 0),
-            new Vector3f(0, float_height[0], fy),
-            new Vector3f(fx, float_height[1], fy),
+            new Vector3f(0, float_height[0], fz),
+            new Vector3f(fx, float_height[1], fz),
             new Vector3f(fx, float_height[2], 0)
         };
         

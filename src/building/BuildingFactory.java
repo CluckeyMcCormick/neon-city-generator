@@ -26,6 +26,7 @@ import prime.RandomSingleton;
 import mesh.CivilizedBase;
 import mesh.CivilizedWarpingQuad;
 import mesh.ClosedBox;
+import production.DebugShapeFactory;
 
 /**
  *
@@ -41,67 +42,71 @@ public class BuildingFactory {
     public static final int NORTH_INDEX = 2;
     public static final int WEST_INDEX = 3;
     
-    private MaterialBook matBook;
-    private ColorBook coBook;
-    private BuildingDetail bd;
+    private MaterialBook mat_book;
+    private ColorBook color_book;
+    private BuildingDetail build_detail;
+    private DebugShapeFactory debug_factory;
     
     public BuildingFactory(ColorBook colo, BuildingDetail bd, AssetManager am){    
 
-        this.coBook = colo;
-        this.matBook = MaterialBuilder.buildMatBook(coBook, bd, am);
+        this.color_book = colo;
+        this.mat_book = MaterialBuilder.buildMatBook(color_book, bd, am);
         
-        this.bd = bd;
+        this.build_detail = bd;
+        
+        debug_factory = new DebugShapeFactory(am);
     }
     
-    public Geometry blockFloor(int[] unitHeights, int[] cardinalCuts, int unitWidth, int unitLength ){
+    public Geometry blockFloor(int[] unit_heights, int[] cardinal_cuts, int unit_x, int unit_z){
         Geometry floor;
         Material baseMat;
         
         float virtWidth;
         float virtLength;
         
-        baseMat = this.matBook.getBaseMat();
+        baseMat = this.mat_book.getBaseMat();
         
-        virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
-        virtLength = (unitLength * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        virtWidth = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        virtLength = (unit_x * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
-        if(cardinalCuts[0] == 0 && cardinalCuts[1] == 0 &&
-            cardinalCuts[2] == 0 && cardinalCuts[3] == 0
+        if(cardinal_cuts[0] == 0 && cardinal_cuts[1] == 0 &&
+            cardinal_cuts[2] == 0 && cardinal_cuts[3] == 0
         )
             floor = new Geometry("block_floor", 
                 new CivilizedWarpingQuad(
-                    unitWidth, unitLength, unitHeights
+                    unit_x, unit_z, unit_heights
                 ) 
             );
         else
             floor = new Geometry("block_floor", 
                 new CivilizedBase(
-                    unitHeights, cardinalCuts, unitWidth, unitLength
+                    unit_heights, cardinal_cuts, unit_x, unit_z
                 ) 
             );
         
         floor.setMaterial(baseMat);
+        /*
         floor.setLocalRotation( 
             floor.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
         );
         floor.setLocalTranslation(0, 0, virtWidth);     
-        
+        */
         return floor;
     }
 
-    public Geometry intersection(int unitHeight, int unitWidth, int unitLength ){
+    public Geometry intersection(int unit_height, int unit_z, int unit_x ){
         Geometry sect;
         Material baseMat;
         
-        float virtWidth;
+        float z_virtual_len;
         
-        baseMat = this.matBook.getBaseMat();
+        baseMat = this.mat_book.getBaseMat();
         
-        virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        z_virtual_len = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         sect = new Geometry("intersection", 
             new CivilizedWarpingQuad(
-                unitWidth, unitLength, unitHeight
+                unit_z, unit_x, unit_height
             ) 
         );
         
@@ -109,24 +114,24 @@ public class BuildingFactory {
         sect.setLocalRotation( 
             sect.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
         );
-        sect.setLocalTranslation(0, 0, virtWidth);     
+        sect.setLocalTranslation(0, 0, z_virtual_len);     
         
         return sect;
     }
 
-    public Geometry road(int[] unitHeights, int unitWidth, int unitLength ){
+    public Geometry road(int[] unit_heights, int unit_z, int unit_x){
         Geometry road;
         Material baseMat;
         
-        float virtWidth;
+        float z_len_virtual;
         
-        baseMat = this.matBook.getBaseMat();
+        baseMat = this.mat_book.getBaseMat();
         
-        virtWidth = (unitWidth * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        z_len_virtual = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         road = new Geometry("road", 
             new CivilizedWarpingQuad(
-                unitWidth, unitLength, unitHeights
+                unit_z, unit_x, unit_heights
             ) 
         );
         
@@ -134,33 +139,33 @@ public class BuildingFactory {
         road.setLocalRotation( 
             road.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
         );
-        road.setLocalTranslation(0, 0, virtWidth);     
+        road.setLocalTranslation(0, 0, z_len_virtual);     
         
         return road;
     }
     
     //In the actual program, we'll be creating buildings to fit gaps
     //So we'll know the width - the number of units - but not the height.
-    public FloorCellBuilding randomFCB(int unitWidth, int unitHeight){
-        return this.randomFCB(unitWidth, unitWidth, unitHeight, 0);
+    public FloorCellBuilding randomFCB(int unit_length, int unit_height){
+        return this.randomFCB(unit_length, unit_length, unit_height, 0);
     }
     
-    public FloorCellBuilding randomFCB(int unitLength, int unitWidth, int unitHeight, float heightAdjust){
+    public FloorCellBuilding randomFCB(int unit_x, int unit_z, int unit_height, float height_adjust){
         FloorCellBuilding fcb;
         
-        if( unitHeight < Building.MIN_UNIT_HEIGHT )
-           unitHeight = Building.MIN_UNIT_HEIGHT;  
+        if( unit_height < Building.MIN_UNIT_HEIGHT )
+           unit_height = Building.MIN_UNIT_HEIGHT;  
         
-        fcb = new FloorCellBuilding(unitLength, unitWidth, unitHeight, this.bd);
+        fcb = new FloorCellBuilding(unit_x, unit_z, unit_height, this.build_detail);
         
-        this.buildFCB(fcb, heightAdjust);
+        this.buildFCB(fcb, height_adjust);
     
         return fcb;
     }
     
     private void buildFCB(FloorCellBuilding bb, float heightAdjust){
 
-        Material fullMat = this.matBook.getFullMat(WindowStyle.STANDARD);
+        Material fullMat = this.mat_book.getFullMat(WindowStyle.STANDARD);
         
         final float HEIGHT_ADJUST = heightAdjust * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
@@ -191,77 +196,77 @@ public class BuildingFactory {
     }
     
     public Vector2f[] getRandomTextureCoords(FloorCellBuilding bb){
-        Vector2f[] texCoords;
+        Vector2f[] tex_coords;
         RandomSingleton rand = RandomSingleton.getInstance();
         
-        int totalFloors;
-        int totalCells;
+        int total_floors;
+        int total_cells;
         
-        float maxX;
-        float maxY;
+        float max_x;
+        float max_y;
         
-        float shiftX;
-        float shiftY;
+        float shift_x;
+        float shift_y;
         
-        texCoords = new Vector2f[16];       
+        tex_coords = new Vector2f[16];       
       
-        totalFloors = TextureBuilder.TEXTURE_Y / bd.getCellPixHeight();
-        if(TextureBuilder.TEXTURE_Y % bd.getCellPixHeight() != 0)
-            totalFloors = totalFloors - 1;
+        total_floors = TextureBuilder.TEXTURE_Y / build_detail.getCellPixHeight();
+        if(TextureBuilder.TEXTURE_Y % build_detail.getCellPixHeight() != 0)
+            total_floors = total_floors - 1;
         
-        totalCells = TextureBuilder.TEXTURE_X / bd.getCellPixWidth();
-        if(TextureBuilder.TEXTURE_X % bd.getCellPixWidth() != 0)
-            totalCells = totalCells - 1;
+        total_cells = TextureBuilder.TEXTURE_X / build_detail.getCellPixWidth();
+        if(TextureBuilder.TEXTURE_X % build_detail.getCellPixWidth() != 0)
+            total_cells = total_cells - 1;
         
         //Back, right, front, left
         for(int i = 0; i < 4; i++){
-            shiftX = rand.nextInt(totalCells) * bd.getTexWidthPerCell();
-            shiftY = rand.nextInt(totalFloors) * bd.getTexHeightPerCell();
+            shift_x = rand.nextInt(total_cells) * build_detail.getTexWidthPerCell();
+            shift_y = rand.nextInt(total_floors) * build_detail.getTexHeightPerCell();
             
             if(i % 2 == 0)
-                maxX = shiftX + bb.textureLength();
+                max_x = shift_x + bb.textureLength();
             else
-                maxX = shiftX + bb.textureWidth();
+                max_x = shift_x + bb.textureWidth();
             
-            maxY = shiftY + bb.textureHeight();
+            max_y = shift_y + bb.textureHeight();
             
-            if(maxX < 0)
-                maxX = 0;
-            if(maxY < 0)
-                maxY = 0;
+            if(max_x < 0)
+                max_x = 0;
+            if(max_y < 0)
+                max_y = 0;
             
             //Lower left
-            texCoords[i * 4] = new Vector2f(shiftX, shiftY);
+            tex_coords[i * 4] = new Vector2f(shift_x, shift_y);
             //Lower Right
-            texCoords[(i * 4) + 1] = new Vector2f(maxX, shiftY);
+            tex_coords[(i * 4) + 1] = new Vector2f(max_x, shift_y);
             //Upper Right
-            texCoords[(i * 4) + 2] = new Vector2f(maxX, maxY);
+            tex_coords[(i * 4) + 2] = new Vector2f(max_x, max_y);
             //Upper Left
-            texCoords[(i * 4) + 3] = new Vector2f(shiftX, maxY);
+            tex_coords[(i * 4) + 3] = new Vector2f(shift_x, max_y);
         }
         
-        return texCoords;
+        return tex_coords;
     }
 
-    public Vector2f[] textureShift(Vector2f[] oldCoord, int heightAdjust){
-        Vector2f[] newCoord;
+    public Vector2f[] textureShift(Vector2f[] old_coord, int height_adjust){
+        Vector2f[] new_coord;
         
-        float shiftY = heightAdjust * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.TEXTURE_LENGTH_PER_PIXEL;
+        float shift_y = height_adjust * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.TEXTURE_LENGTH_PER_PIXEL;
         
-        newCoord = new Vector2f[16];       
+        new_coord = new Vector2f[16];       
         
         //Back, right, front, left
         for(int i = 0; i < 4; i++){        
             //Lower left
-            newCoord[i * 4] = oldCoord[i * 4].clone().addLocal(0, -shiftY);
+            new_coord[i * 4] = old_coord[i * 4].clone().addLocal(0, -shift_y);
             //Lower Right
-            newCoord[(i * 4) + 1] = oldCoord[(i * 4) + 1].clone().addLocal(0, -shiftY);
+            new_coord[(i * 4) + 1] = old_coord[(i * 4) + 1].clone().addLocal(0, -shift_y);
             //Upper Right
-            newCoord[(i * 4) + 2] = oldCoord[(i * 4) + 2].clone();
+            new_coord[(i * 4) + 2] = old_coord[(i * 4) + 2].clone();
             //Upper Left
-            newCoord[(i * 4) + 3] = oldCoord[(i * 4) + 3].clone();
+            new_coord[(i * 4) + 3] = old_coord[(i * 4) + 3].clone();
         }
         
-        return newCoord;
+        return new_coord;
     }
 }

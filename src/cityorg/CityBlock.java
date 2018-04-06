@@ -69,85 +69,85 @@ public abstract class CityBlock extends CityStructure {
     
     public static final int MIN_FRONT = Building.MIN_UNIT_HEIGHT;
     
-    private BlockDetail blockDet;
+    private BlockDetail block_detail;
     
-    private int unitLength; 
-    private int unitWidth;
+    private int unit_x; 
+    private int unit_z;
     
-    private int[] unitHeights;
-    private int[] cardinalCuts;
+    private int[] unit_heights;
+    private int[] cardinal_cuts;
 
-    int westCut;
-    int eastCut;
-    int southCut;
-    int northCut; 
+    private int west_cut;
+    private int east_cut;
+    private int south_cut;
+    private int north_cut; 
     
-    private final Vector3f northSlope;
-    private final Vector3f eastSlope;
-    private final Vector3f southSlope;
-    private final Vector3f westSlope;
+    private final Vector3f north_slope;
+    private final Vector3f east_slope;
+    private final Vector3f south_slope;
+    private final Vector3f west_slope;
     
-    private final Vector2f divisorSlope;
+    private final Vector2f divisor_slope;
     
-    private final Vector3f upperOrigin;
-    private final Vector3f lowerOrigin;
+    private final Vector3f upper_origin;
+    private final Vector3f lower_origin;
     
     
     public CityBlock(
-            BlockDetail bd, int[] unitHeights, int[] cardinalCuts, 
-            int unitLength, int unitWidth
+        BlockDetail block_detail, int[] unit_heights, int[] cardinal_cuts, 
+        int unit_x, int unit_z
     ) {
-        this.blockDet = bd;
-        this.unitHeights = unitHeights;
+        this.block_detail = block_detail;
+        this.unit_heights = unit_heights;
         
-        this.unitLength = unitLength;
-        this.unitWidth = unitWidth;
+        this.unit_x = unit_x;
+        this.unit_z = unit_z;
         
-        this.cardinalCuts = cardinalCuts;
+        this.cardinal_cuts = cardinal_cuts;
         
-        this.westCut = cardinalCuts[Cardinal.WEST.value / 2];
-        this.eastCut = cardinalCuts[Cardinal.EAST.value / 2];
+        this.west_cut = cardinal_cuts[Cardinal.WEST.value / 2];
+        this.east_cut = cardinal_cuts[Cardinal.EAST.value / 2];
         
-        this.southCut = cardinalCuts[Cardinal.SOUTH.value / 2];
-        this.northCut = cardinalCuts[Cardinal.NORTH.value / 2];
+        this.south_cut = cardinal_cuts[Cardinal.SOUTH.value / 2];
+        this.north_cut = cardinal_cuts[Cardinal.NORTH.value / 2];
         
-        int slopeWidth = unitWidth - ( westCut + eastCut );
-        int slopeLength = unitLength - ( southCut + northCut );
+        int slope_z = unit_z - ( west_cut + east_cut );
+        int slope_x = unit_x - ( south_cut + north_cut );
         
         //Create our slopes
-        eastSlope = new Vector3f(
+        east_slope = new Vector3f(
                 0, 
-                unitHeights[POINT_B] - unitHeights[POINT_C],  //rise
-                -slopeWidth           //run
-        ).mult(1 / (float) slopeWidth ); //divide by width to unitize
-        southSlope = new Vector3f(
-                -slopeLength,            //run
-                unitHeights[POINT_D] - unitHeights[POINT_C],  //rise
+                unit_heights[POINT_B] - unit_heights[POINT_C],  //rise
+                -slope_z           //run
+        ).mult(1 / (float) slope_z ); //divide by width to unitize
+        south_slope = new Vector3f(
+                -slope_x,            //run
+                unit_heights[POINT_D] - unit_heights[POINT_C],  //rise
                 0
-        ).mult(1 / (float) slopeLength ); //divide by length to unitize
-        lowerOrigin = new Vector3f(
-                unitLength - eastCut, 
-                unitHeights[POINT_C], 
-                unitWidth - northCut
+        ).mult(1 / (float) slope_x ); //divide by length to unitize
+        lower_origin = new Vector3f(
+                unit_x - east_cut, 
+                unit_heights[POINT_C], 
+                unit_z - north_cut
         );
         
-        westSlope = new Vector3f(
+        west_slope = new Vector3f(
                 0,
-                unitHeights[POINT_D] - unitHeights[POINT_A],  //rise
-                slopeWidth                                    //run
-        ).mult(1 / (float) slopeWidth ); //divide by width to unitize
-        northSlope = new Vector3f(
-                slopeLength,             //run
-                unitHeights[POINT_B] - unitHeights[POINT_A],  //rise
+                unit_heights[POINT_D] - unit_heights[POINT_A],  //rise
+                slope_z                                    //run
+        ).mult(1 / (float) slope_z ); //divide by width to unitize
+        north_slope = new Vector3f(
+                slope_x,             //run
+                unit_heights[POINT_B] - unit_heights[POINT_A],  //rise
                 0 
-        ).mult(1 / (float) slopeLength ); //divide by length to unitize
-        upperOrigin = new Vector3f(
-                westCut, 
-                unitHeights[POINT_A], 
-                southCut
+        ).mult(1 / (float) slope_x ); //divide by length to unitize
+        upper_origin = new Vector3f(
+                west_cut, 
+                unit_heights[POINT_A], 
+                south_cut
         );
         //                              run           rise
-        divisorSlope = new Vector2f( slopeLength, -slopeWidth ).mult(1 / (float) slopeLength ); //unitize
+        divisor_slope = new Vector2f( slope_x, -slope_z ).mult(1 / (float) slope_x ); //unitize
         
         super.setNode( new Node() );
     }
@@ -155,9 +155,7 @@ public abstract class CityBlock extends CityStructure {
     public void generateBuildings(BuildingFactory bf){
         Geometry geom;
         Node nod = super.getNode();
-        geom = bf.blockFloor(
-            unitHeights, cardinalCuts, unitWidth, unitLength
-        );
+        geom = bf.blockFloor(unit_heights, cardinal_cuts, unit_x, unit_z);
         
         nod.attachChild(geom);
     }
@@ -185,83 +183,83 @@ public abstract class CityBlock extends CityStructure {
     }
     
     public int getUnitLength() {
-        return unitLength;
+        return unit_x;
     }
 
     public void setUnitLength(int unitLength) {
-        this.unitLength = unitLength;
+        this.unit_x = unitLength;
     }
 
     public int getUnitWidth() {
-        return unitWidth;
+        return unit_z;
     }
 
     public void setUnitWidth(int unitWidth) {
-        this.unitWidth = unitWidth;
+        this.unit_z = unitWidth;
     }
 
     public int[] getUnitHeight() {
-        return unitHeights;
+        return unit_heights;
     }
 
     public void setUnitHeight(int[] unitHeight) {
-        this.unitHeights = unitHeight;
+        this.unit_heights = unitHeight;
     }
     
     public BlockDetail getBlockDet() {
-        return blockDet;
+        return block_detail;
     }
     
     //Get the height along the northern border line
     public float getNorthHeight(int x) {
-        if( x <= westCut )
-            return this.unitHeights[POINT_A];
-        else if(x >= this.unitLength - eastCut)
-            return this.unitHeights[POINT_B];
+        if( x <= west_cut )
+            return this.unit_heights[POINT_A];
+        else if(x >= this.unit_x - east_cut)
+            return this.unit_heights[POINT_B];
         else
             // r = o + sh
-            return upperOrigin.y + this.northSlope.y * (x - westCut);
+            return upper_origin.y + this.north_slope.y * (x - west_cut);
     }  
     //Get the height along the western border line
     public float getWestHeight(int z) {
-        if( z <= northCut)
-            return this.unitHeights[POINT_A];
-        else if(z >= this.unitWidth - southCut)
-            return this.unitHeights[POINT_D];
+        if( z <= north_cut)
+            return this.unit_heights[POINT_A];
+        else if(z >= this.unit_z - south_cut)
+            return this.unit_heights[POINT_D];
         else
             // r = o + tv
-            return upperOrigin.y + this.westSlope.y * (z - northCut);
+            return upper_origin.y + this.west_slope.y * (z - north_cut);
     }   
     public float getUpperPlaneHeight(int x, int z){
         // r  = o + sh + tv
-        return upperOrigin.y + ((x - westCut) * this.northSlope.y) + ((z - northCut) * this.westSlope.y);
+        return upper_origin.y + ((x - west_cut) * this.north_slope.y) + ((z - north_cut) * this.west_slope.y);
     }
     
     //Gets the height along the southern border line
     public float getSouthHeight(int x) { 
-        if( x <= westCut )
-            return this.unitHeights[POINT_D];
-        else if(x >= this.unitLength - eastCut)
-            return this.unitHeights[POINT_C];
+        if( x <= west_cut )
+            return this.unit_heights[POINT_D];
+        else if(x >= this.unit_x - east_cut)
+            return this.unit_heights[POINT_C];
         else
             // r  = o + sh
-            return lowerOrigin.y + southSlope.y * ((unitLength - (eastCut + westCut)) - (x - westCut));
+            return lower_origin.y + south_slope.y * ((unit_x - (east_cut + west_cut)) - (x - west_cut));
     }
     //Gets the height along the eastern border line
     public float getEastHeight(int z) {
-        if( z <= northCut )
-            return this.unitHeights[POINT_B];
-        else if(z >= this.unitWidth - southCut)
-            return this.unitHeights[POINT_C];
+        if( z <= north_cut )
+            return this.unit_heights[POINT_B];
+        else if(z >= this.unit_z - south_cut)
+            return this.unit_heights[POINT_C];
         else 
             // r = o + tv
-            return lowerOrigin.y + eastSlope.y * ((unitWidth - (southCut + northCut)) - (z - northCut));
+            return lower_origin.y + east_slope.y * ((unit_z - (south_cut + north_cut)) - (z - north_cut));
     } 
     public float getLowerPlaneHeight(int x, int z){
         // r  = o + sh + tv
-        return lowerOrigin.y 
-            + (this.southSlope.y * ((unitLength - (westCut + eastCut)) - (x - westCut)))
-            + (this.eastSlope.y * ((unitWidth - (southCut + northCut)) - (z - northCut)));
+        return lower_origin.y 
+            + (this.south_slope.y * ((unit_x - (west_cut + east_cut)) - (x - west_cut)))
+            + (this.east_slope.y * ((unit_z - (south_cut + north_cut)) - (z - north_cut)));
     }
     
     //To Do: Given X and Y, return Height
@@ -269,20 +267,20 @@ public abstract class CityBlock extends CityStructure {
         float height;
         
         //if our x value is in the western flat space
-        if(x <= westCut)
+        if(x <= west_cut)
             return this.getWestHeight(z);
         //else, if our x value is in the eastern flat space
-        else if(x >= this.unitLength - eastCut)
+        else if(x >= this.unit_x - east_cut)
             return this.getEastHeight(z);
         //else, if our y value is in the northern flat space
-        else if(z <= northCut)
+        else if(z <= north_cut)
             return this.getNorthHeight(x);
         //else, if our y value is in the southern flat space
-        else if(z >= this.unitWidth - southCut)
+        else if(z >= this.unit_z - south_cut)
             return this.getSouthHeight(x);
         else
             //We're in the upper plane if our current y value is greater than the divider slope
-            if( z > lowerOrigin.z + ( (x - westCut) * divisorSlope.y))    
+            if( z > lower_origin.z + ( (x - west_cut) * divisor_slope.y))    
                 return this.getLowerPlaneHeight(x, z); 
             else  
                 return this.getUpperPlaneHeight(x, z);     

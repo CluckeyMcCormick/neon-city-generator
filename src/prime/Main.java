@@ -1,6 +1,7 @@
 package prime;
 
 import production.ColorBook;
+import production.DebugShapeFactory;
 
 import building.BuildingFactory;
 import building.BuildingDetail;
@@ -61,11 +62,16 @@ public class Main extends SimpleApplication {
         City the_city = new City(16, 12, 32, 32);
         the_city.build(blockRespDet, bf_low_band);
         rootNode.attachChild( the_city.getNode() );
+        //CityBlock block = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, new int[]{0, 0, 0, 0}, 16, 48, false);
+        //block.generateBuildings(bf_low_band);
         rootNode.scale(1f);
+        //rootNode.attachChild( block.getNode() );
         this.setDisplayFps(false);
         this.setDisplayStatView(false);
         
-        attachCoordinateAxes(new Vector3f(0,0,0));
+        DebugShapeFactory debugFactory = new DebugShapeFactory(assetManager);
+        
+        debugFactory.attachCoordinateAxes(rootNode, new Vector3f(0,0,0));
     }
     
     @Override
@@ -78,25 +84,4 @@ public class Main extends SimpleApplication {
         //TODO: add render code
     }
   
-    private void attachCoordinateAxes(Vector3f pos) {
-        Arrow arrow = new Arrow(Vector3f.UNIT_X);
-        putShape(arrow, ColorRGBA.Red).setLocalTranslation(pos);
-
-        arrow = new Arrow(Vector3f.UNIT_Y);
-        putShape(arrow, ColorRGBA.Green).setLocalTranslation(pos);
-
-        arrow = new Arrow(Vector3f.UNIT_Z);
-        putShape(arrow, ColorRGBA.Blue).setLocalTranslation(pos);
-    }
-
-    private Geometry putShape(Mesh shape, ColorRGBA color) {
-        Geometry g = new Geometry("coordinate axis", shape);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.getAdditionalRenderState().setWireframe(true);
-        mat.getAdditionalRenderState().setLineWidth(4);
-        mat.setColor("Color", color);
-        g.setMaterial(mat);
-        rootNode.attachChild(g);
-        return g;
-    }
 }

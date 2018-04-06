@@ -16,28 +16,28 @@ public class FloorCellBuilding extends Building {
     // Specifies the number of floors 
     int floors;
     // Specifies the number of cells per floor, length-wise
-    int cellLength;
+    int cell_x_len;
     // Specifies the number of cells per floor, width-wise
-    int cellWidth; 
+    int cell_z_len; 
     
-    public FloorCellBuilding(int unitWidth, int unitLength, int unitHeight, BuildingDetail bd){
-        this.cellWidth = bd.unitsToCells(unitWidth);
-        this.cellLength = bd.unitsToCells(unitLength);
+    public FloorCellBuilding(int unit_z, int unit_x, int unitHeight, BuildingDetail bd){
+        this.cell_z_len = bd.unitsToCells(unit_z);
+        this.cell_x_len = bd.unitsToCells(unit_x);
         
         if( unitHeight < Building.MIN_UNIT_HEIGHT )
             this.floors = bd.unitsToFloors( Building.MIN_UNIT_HEIGHT );
         else
             this.floors = bd.unitsToFloors(unitHeight);
         
-        super.setDeets(bd, unitWidth, unitLength);
+        super.setDeets(bd, unit_z, unit_x);
     }
     
     public float textureWidth(){
-        return this.cellWidth * super.getDeets().getTexWidthPerCell();
+        return this.cell_z_len * super.getDeets().getTexWidthPerCell();
     }
     
     public float textureLength(){
-        return this.cellLength * super.getDeets().getTexWidthPerCell();
+        return this.cell_x_len * super.getDeets().getTexWidthPerCell();
     }
     
     public float textureHeight(){
@@ -45,11 +45,11 @@ public class FloorCellBuilding extends Building {
     }
     
     public float virtualWidth(){
-        return this.cellWidth * super.getDeets().getVirtWidthPerCell();
+        return this.cell_z_len * super.getDeets().getVirtWidthPerCell();
     }
     
     public float virtualLength(){
-        return this.cellLength * super.getDeets().getVirtWidthPerCell();
+        return this.cell_x_len * super.getDeets().getVirtWidthPerCell();
     }
     
     public float virtualHeight(){
@@ -61,19 +61,19 @@ public class FloorCellBuilding extends Building {
     }
   
     public int getCellWidth() {
-        return cellWidth;
+        return cell_z_len;
     }
 
     public void setCellWidth(int cellWidth) {
-        this.cellWidth = cellWidth;
+        this.cell_z_len = cellWidth;
     }
     
     public int getCellLength() {
-        return cellLength;
+        return cell_x_len;
     }
 
     public void setCellLength(int cellLength) {
-        this.cellLength = cellLength;
+        this.cell_x_len = cellLength;
     }
   
     public int getFloors() {
