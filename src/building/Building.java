@@ -14,7 +14,7 @@ import cityorg.CityStructure;
 public abstract class Building extends CityStructure {
     
     // The details of this building - concerning cell widths and the like
-    private BuildingDetail deets;
+    private CellTextureDetail deets;
     
     private int unitWidth;
     
@@ -22,13 +22,13 @@ public abstract class Building extends CityStructure {
     
     public static final int MIN_UNIT_HEIGHT = 4;
     
-    public void setDeets(BuildingDetail deets, int unitWidth, int unitLength) {
+    public void setDeets(CellTextureDetail deets, int unitWidth, int unitLength) {
         this.deets = deets;
         this.unitLength = unitLength;
         this.unitWidth = unitWidth;
     }
     
-    public BuildingDetail getDeets() {
+    public CellTextureDetail getDeets() {
         return deets;
     }
     

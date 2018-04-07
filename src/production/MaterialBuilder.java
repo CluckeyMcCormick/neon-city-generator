@@ -4,7 +4,7 @@
  */
 package production;
 
-import building.BuildingDetail;
+import building.CellTextureDetail;
 import cityorg.CityStructure;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.TextureKey;
@@ -26,7 +26,7 @@ public class MaterialBuilder {
     public static final int MEDIUM_STREET_INDEX = 2;
     public static final int LARGE_STREET_INDEX = 3;
     
-    public static MaterialBook buildMatBook(ColorBook colorBook, BuildingDetail bd, AssetManager am){
+    public static MaterialBook buildMatBook(ColorBook colorBook, CellTextureDetail bd, AssetManager am){
         
         /* Stage 1: Lit Materials ~~~~~~~~~~~~~~~ */
         Image[][] generatedTex;

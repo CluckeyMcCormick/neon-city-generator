@@ -4,21 +4,15 @@ import production.ColorBook;
 import production.DebugShapeFactory;
 
 import building.BuildingFactory;
-import building.BuildingDetail;
+import building.CellTextureDetail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 
 import cityorg.BlockDetail;
 import cityorg.City;
-import cityorg.CityBlock;
-import cityorg.blocktype.BlockAlley;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
+
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.debug.Arrow;
 
 
 /**
@@ -39,14 +33,14 @@ public class Main extends SimpleApplication {
         final int blankWidthA = 2;
         final int blankHeightA = 2;
         
-        BuildingDetail bd_low_band = new BuildingDetail(
+        CellTextureDetail bd_low_band = new CellTextureDetail(
             widthA, dimA,
             dimA * 3, dimA / 2, dimA * 2,
             dimA * 9, dimA * 8,
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
 
-        BuildingDetail bd_high_band = new BuildingDetail(
+        CellTextureDetail bd_high_band = new CellTextureDetail(
             widthA, dimA,
             dimA * 6, dimA / 2, dimA * 5,
             dimA * 12, dimA * 8,

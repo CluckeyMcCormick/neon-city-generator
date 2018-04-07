@@ -95,10 +95,10 @@ public class CivilizedWarpingQuad extends Mesh{
             float_height[i] = height[i] * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
-            new Vector3f(0, float_height[3], 0),
-            new Vector3f(0, float_height[0], fz),
-            new Vector3f(fx, float_height[1], fz),
-            new Vector3f(fx, float_height[2], 0)
+            new Vector3f(0, float_height[0], 0),
+            new Vector3f(0, float_height[1], fz),
+            new Vector3f(fx, float_height[2], fz),
+            new Vector3f(fx, float_height[3], 0)
         };
         
         texturious = new Vector2f[]{

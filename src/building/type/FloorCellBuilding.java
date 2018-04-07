@@ -5,7 +5,7 @@
 package building.type;
 
 import building.Building;
-import building.BuildingDetail;
+import building.CellTextureDetail;
 
 /**
  *
@@ -20,7 +20,7 @@ public class FloorCellBuilding extends Building {
     // Specifies the number of cells per floor, width-wise
     int cell_z_len; 
     
-    public FloorCellBuilding(int unit_z, int unit_x, int unitHeight, BuildingDetail bd){
+    public FloorCellBuilding(int unit_z, int unit_x, int unitHeight, CellTextureDetail bd){
         this.cell_z_len = bd.unitsToCells(unit_z);
         this.cell_x_len = bd.unitsToCells(unit_x);
         
@@ -60,19 +60,19 @@ public class FloorCellBuilding extends Building {
         return super.getDeets().floorsToUnits(this.floors);
     }
   
-    public int getCellWidth() {
+    public int getZLen() {
         return cell_z_len;
     }
 
-    public void setCellWidth(int cellWidth) {
+    public void setZLen(int cellWidth) {
         this.cell_z_len = cellWidth;
     }
     
-    public int getCellLength() {
+    public int getXLen() {
         return cell_x_len;
     }
 
-    public void setCellLength(int cellLength) {
+    public void setXLen(int cellLength) {
         this.cell_x_len = cellLength;
     }
   

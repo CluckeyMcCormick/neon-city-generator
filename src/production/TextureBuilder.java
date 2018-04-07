@@ -4,7 +4,7 @@
  */
 package production;
 
-import building.BuildingDetail;
+import building.CellTextureDetail;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import static production.CellState.DIM;
@@ -30,7 +30,7 @@ public class TextureBuilder {
     
     private TextureBuilder(){}
     
-    public static BufferedImage[][] drawOffices(BuildingDetail bd){
+    public static BufferedImage[][] drawOffices(CellTextureDetail bd){
         BufferedImage[][] bis;
         WindowStyle[] styles;
         
@@ -61,7 +61,7 @@ public class TextureBuilder {
         return bis;
     }
     
-    private static void normalDraw(BuildingDetail bd, BufferedImage[] bis){
+    private static void normalDraw(CellTextureDetail bd, BufferedImage[] bis){
         int rando;
         CellState state;
         RandomSingleton rand = RandomSingleton.getInstance();
@@ -94,7 +94,7 @@ public class TextureBuilder {
             }
     }
     
-    private static void verticalDraw(BuildingDetail bd, BufferedImage[] bis){
+    private static void verticalDraw(CellTextureDetail bd, BufferedImage[] bis){
         int rando;
         CellState state;
         RandomSingleton rand = RandomSingleton.getInstance(); 
@@ -127,7 +127,7 @@ public class TextureBuilder {
             }
     }
     
-    private static void randomDraw(BuildingDetail bd, BufferedImage[] bis){
+    private static void randomDraw(CellTextureDetail bd, BufferedImage[] bis){
         int rando;
         CellState state;
         RandomSingleton rand = RandomSingleton.getInstance();
@@ -149,7 +149,7 @@ public class TextureBuilder {
             }
     }
     
-    private static void ribbonDraw(BuildingDetail bd, BufferedImage[] bis){
+    private static void ribbonDraw(CellTextureDetail bd, BufferedImage[] bis){
         int rando;
         CellState state;
         RandomSingleton rand = RandomSingleton.getInstance();
@@ -205,7 +205,7 @@ public class TextureBuilder {
     
     private static void drawCell( 
         int floor, int cell, CellState state, BufferedImage biLit, 
-        BufferedImage biDim, BuildingDetail bd
+        BufferedImage biDim, CellTextureDetail bd
     ){
         RandomSingleton rs = RandomSingleton.getInstance();
         BufferedImage bi;

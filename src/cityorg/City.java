@@ -61,7 +61,7 @@ public class City extends CityStructure{
     }
     
     private int getHeight(int x, int z, double grade){
-        return x * 7;
+        return (x * 7) + (z * 3);
     }
     
     private void generateRoads(){
@@ -104,6 +104,11 @@ public class City extends CityStructure{
                 block_height[1] = grid_heights[x + 1][z];        
                 block_height[2] = grid_heights[x][z];
                 block_height[3] = grid_heights[x][z + 1];
+                
+                block_height[0] = grid_heights[x][z];
+                block_height[1] = grid_heights[x][z + 1];        
+                block_height[2] = grid_heights[x + 1][z + 1];
+                block_height[3] = grid_heights[x + 1][z];
                 
                 //Formulas for "roadSizes" arrays
                 adjust_x = z_para_sizes[x].unitWidth / 2; 
@@ -158,17 +163,18 @@ public class City extends CityStructure{
         int x_len;
         int[] heights;
         
+        //Generate the Z-parallel streets
         for(int x = 0; x < z_para_sizes.length; x++){
             x_len = z_para_sizes[x].unitWidth;
             
             for(int z = 0; z < x_para_sizes.length - 1; z++){
                 z_len = z_perblock_len - (x_para_sizes[z].unitWidth / 2) - (x_para_sizes[z + 1].unitWidth / 2);
                 heights = new int[]{ 
-                    this.grid_heights[x][z + 1], this.grid_heights[x][z],
-                    this.grid_heights[x][z], this.grid_heights[x][z + 1]
+                    this.grid_heights[x][z], this.grid_heights[x][z + 1],
+                    this.grid_heights[x][z + 1], this.grid_heights[x][z]
                 };
                 
-                section = factory.road(heights, z_len, x_len);
+                section = factory.road(heights, x_len, z_len);
                 
                 newX = (x * x_perblock_len - x_len / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 newZ = (z * z_perblock_len + x_para_sizes[z].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
@@ -178,24 +184,27 @@ public class City extends CityStructure{
             }
         }
 
+        //Generate the X-parallel streets
         for(int z = 0; z < x_para_sizes.length; z++){
             z_len = x_para_sizes[z].unitWidth;
             
             for(int x = 0; x < z_para_sizes.length - 1; x++){
                 x_len = x_perblock_len - (z_para_sizes[x].unitWidth / 2) - (z_para_sizes[x + 1].unitWidth / 2);
                 heights = new int[]{ 
-                    this.grid_heights[x + 1][z], this.grid_heights[x + 1][z],
-                    this.grid_heights[x][z], this.grid_heights[x][z]
+                    this.grid_heights[x][z], this.grid_heights[x][z],
+                    this.grid_heights[x + 1][z], this.grid_heights[x + 1][z]
                 };
                 
-                section = factory.road(heights, z_len, x_len);
+                section = factory.road(heights, x_len, z_len);
                 
                 newX = (x * x_perblock_len + z_para_sizes[x].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 newZ = (z * z_perblock_len - z_len / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 
                 section.move(newX, 0, newZ);
+
                 this.addFeature(section);
             }
         }
+       
     }
 }

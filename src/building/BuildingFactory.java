@@ -44,10 +44,10 @@ public class BuildingFactory {
     
     private MaterialBook mat_book;
     private ColorBook color_book;
-    private BuildingDetail build_detail;
+    private CellTextureDetail build_detail;
     private DebugShapeFactory debug_factory;
     
-    public BuildingFactory(ColorBook colo, BuildingDetail bd, AssetManager am){    
+    public BuildingFactory(ColorBook colo, CellTextureDetail bd, AssetManager am){    
 
         this.color_book = colo;
         this.mat_book = MaterialBuilder.buildMatBook(color_book, bd, am);
@@ -61,13 +61,7 @@ public class BuildingFactory {
         Geometry floor;
         Material baseMat;
         
-        float virtWidth;
-        float virtLength;
-        
         baseMat = this.mat_book.getBaseMat();
-        
-        virtWidth = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
-        virtLength = (unit_x * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         if(cardinal_cuts[0] == 0 && cardinal_cuts[1] == 0 &&
             cardinal_cuts[2] == 0 && cardinal_cuts[3] == 0
@@ -85,12 +79,7 @@ public class BuildingFactory {
             );
         
         floor.setMaterial(baseMat);
-        /*
-        floor.setLocalRotation( 
-            floor.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
-        );
-        floor.setLocalTranslation(0, 0, virtWidth);     
-        */
+
         return floor;
     }
 
@@ -98,49 +87,33 @@ public class BuildingFactory {
         Geometry sect;
         Material baseMat;
         
-        float z_virtual_len;
-        
         baseMat = this.mat_book.getBaseMat();
-        
-        z_virtual_len = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         sect = new Geometry("intersection", 
             new CivilizedWarpingQuad(
-                unit_z, unit_x, unit_height
+                unit_x, unit_z, unit_height
             ) 
         );
         
-        sect.setMaterial(baseMat);
-        sect.setLocalRotation( 
-            sect.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
-        );
-        sect.setLocalTranslation(0, 0, z_virtual_len);     
+        sect.setMaterial(baseMat);   
         
         return sect;
     }
 
-    public Geometry road(int[] unit_heights, int unit_z, int unit_x){
+    public Geometry road(int[] unit_heights, int unit_x, int unit_z){
         Geometry road;
         Material baseMat;
         
-        float z_len_virtual;
-        
         baseMat = this.mat_book.getBaseMat();
-        
-        z_len_virtual = (unit_z * CityStructure.GOLDEN_PIXEL_COUNT ) * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         road = new Geometry("road", 
             new CivilizedWarpingQuad(
-                unit_z, unit_x, unit_heights
+                unit_x, unit_z, unit_heights
             ) 
         );
         
         road.setMaterial(baseMat);
-        road.setLocalRotation( 
-            road.getLocalRotation().fromAngles(0, FastMath.HALF_PI, 0) 
-        );
-        road.setLocalTranslation(0, 0, z_len_virtual);     
-        
+
         return road;
     }
     

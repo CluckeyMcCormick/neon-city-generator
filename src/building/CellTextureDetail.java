@@ -14,7 +14,7 @@ import cityorg.CityStructure;
  *
  * @author root
  */
-public class BuildingDetail {
+public class CellTextureDetail {
  
     //A hand calculated value for texture length-per-cell (16x16)
     public final static float TEXTURE_DIM16 = .015625f;
@@ -69,7 +69,7 @@ public class BuildingDetail {
         @input midTopHeight - the size of the mid color to top color 
             gradient band
     */
-    public BuildingDetail(
+    public CellTextureDetail(
         int cellPixWidth, int cellPixHeight,
         int baseMidPos, int baseMidHeight, int baseColorCutoff,
         int midTopPos, int midTopHeight, int blanks[]
