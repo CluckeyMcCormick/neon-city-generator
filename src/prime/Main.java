@@ -3,7 +3,6 @@ package prime;
 import production.ColorBook;
 import production.DebugShapeFactory;
 
-import building.BuildingFactory;
 import building.CellTextureDetail;
 
 import com.jme3.app.SimpleApplication;
@@ -13,6 +12,8 @@ import cityorg.BlockDetail;
 import cityorg.City;
 
 import com.jme3.math.Vector3f;
+import production.MaterialBook;
+import production.MaterialBuilder;
 
 
 /**
@@ -48,13 +49,13 @@ public class Main extends SimpleApplication {
         );
         
         ColorBook colob = new ColorBook( "assets/base_colors.json" );
-        colob = new ColorBook( "assets/banff_colors.json" );
+        //colob = new ColorBook( "assets/banff_colors.json" );
         
-        BuildingFactory bf_low_band = new BuildingFactory( colob, bd_low_band, this.assetManager);        
+        MaterialBook mb  = MaterialBuilder.buildMatBook(colob, bd_low_band, this.assetManager);        
         BlockDetail blockRespDet = new BlockDetail(-1, 12, 9, 6, 3, 1);
 
-        City the_city = new City(16, 12, 32, 32);
-        the_city.build(blockRespDet, bf_low_band);
+        City the_city = new City(mb, 6, 6, 32, 32);
+        the_city.build(blockRespDet);
         rootNode.attachChild( the_city.getNode() );
         //CityBlock block = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, new int[]{0, 0, 0, 0}, 16, 48, false);
         //block.generateBuildings(bf_low_band);

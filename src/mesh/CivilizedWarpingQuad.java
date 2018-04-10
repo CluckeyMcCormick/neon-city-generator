@@ -4,7 +4,8 @@
  */
 package mesh;
 
-import building.Building;
+import building.BasicBuildingTemplate;
+import cityorg.CityStructure;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
@@ -22,8 +23,8 @@ public class CivilizedWarpingQuad extends Mesh{
         Vector2f[] texturious;
         int[] indextrious;
         
-        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, 0, 0),
@@ -54,9 +55,9 @@ public class CivilizedWarpingQuad extends Mesh{
         Vector2f[] texturious;
         int[] indextrious;
         
-        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fy = unit_height * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        float fy = unit_height * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, fy, 0),
@@ -87,12 +88,12 @@ public class CivilizedWarpingQuad extends Mesh{
         Vector2f[] texturious;
         int[] indextrious;
 
-        float fx = unit_x * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
-        float fz = unit_z * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+        float fx = unit_x * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
+        float fz = unit_z * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         float[] float_height = new float[4];
         for(int i = 0; i < float_height.length; i++)
-            float_height[i] = height[i] * Building.GOLDEN_PIXEL_COUNT * Building.VIRTUAL_LENGTH_PER_PIXEL;
+            float_height[i] = height[i] * CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
         
         vertextrious = new Vector3f[]{
             new Vector3f(0, float_height[0], 0),

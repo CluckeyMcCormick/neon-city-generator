@@ -7,6 +7,7 @@ package cityorg.blocktype;
 
 import cityorg.BlockDetail;
 import cityorg.CityBlock;
+import production.MaterialBook;
 
 /**
  * A city block that generates no buildings. Primarily used to generate
@@ -15,8 +16,10 @@ import cityorg.CityBlock;
  */
 public class BlockBlank extends CityBlock {
     
-    public BlockBlank(BlockDetail bd, int[] unitHeight, int[] cardinalCuts, int unitLength, int unitWidth) {
-        super(bd, unitHeight, cardinalCuts, unitLength, unitWidth);
+    public BlockBlank(MaterialBook mat_book, BlockDetail bd, 
+        int unit_x, int unit_z, int[] unitHeight
+    ) {
+        super(mat_book, bd, unit_x, unit_z, unitHeight );
     }
     
 }

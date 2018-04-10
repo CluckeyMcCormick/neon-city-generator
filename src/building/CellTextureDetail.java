@@ -125,19 +125,19 @@ public class CellTextureDetail {
     }
     
     public int unitsToCells(int unitLength) {
-        return (unitLength * Building.GOLDEN_PIXEL_COUNT) / this.cellPixWidth;
+        return (unitLength * CityStructure.GOLDEN_PIXEL_COUNT) / this.cellPixWidth;
     }
     
     public int cellsToUnits(int cells) {
-        return (cells * this.cellPixWidth) / Building.GOLDEN_PIXEL_COUNT ;
+        return (cells * this.cellPixWidth) / CityStructure.GOLDEN_PIXEL_COUNT ;
     }
     
     public int unitsToFloors(int unitHeight){
-        return (unitHeight * Building.GOLDEN_PIXEL_COUNT) / this.cellPixHeight;
+        return (unitHeight * CityStructure.GOLDEN_PIXEL_COUNT) / this.cellPixHeight;
     }
     
     public int floorsToUnits(int floors){
-        return (floors * this.cellPixHeight) / Building.GOLDEN_PIXEL_COUNT;
+        return (floors * this.cellPixHeight) / CityStructure.GOLDEN_PIXEL_COUNT;
     }
 
     public Image[][] getLitdim() {

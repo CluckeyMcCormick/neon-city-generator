@@ -7,6 +7,7 @@ package production;
 
 import building.WindowStyle;
 import com.jme3.material.Material;
+import prime.RandomSingleton;
 
 /**
  *
@@ -28,6 +29,11 @@ public class MaterialBook {
         return fullMats[ WindowStyle.indexOf(ws) ];
     }
 
+    public Material getRandomFullMat() {
+        RandomSingleton rs = RandomSingleton.getInstance();
+        return fullMats[ rs.nextInt(fullMats.length) ];
+    }
+    
     public Material getBaseMat() {
         return baseMat;
     }

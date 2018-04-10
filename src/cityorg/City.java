@@ -5,12 +5,14 @@
  */
 package cityorg;
 
-import building.BuildingFactory;
 import cityorg.blocktype.BlockAlley;
 import cityorg.blocktype.BlockBlank;
+import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import mesh.CivilizedWarpingQuad;
 import prime.RandomSingleton;
+import production.MaterialBook;
 
 /**
  *
@@ -18,6 +20,8 @@ import prime.RandomSingleton;
  */
 public class City extends CityStructure{
 
+    private MaterialBook mat_book;
+    
     private final int x_block_len;
     private final int z_block_len;
 
@@ -32,11 +36,13 @@ public class City extends CityStructure{
     //The roads that run parallel to the z axis; indexed by x
     private RoadSize[] z_para_sizes;
     
-    public City(int x_block_len, int z_block_len, int x_perblock_len, int z_perblock_len) {
+    public City(MaterialBook mat_book, int x_block_len, int z_block_len, int x_perblock_len, int z_perblock_len) {
         this.x_block_len = x_block_len;
         this.z_block_len = z_block_len;
         this.x_perblock_len = x_perblock_len;
         this.z_perblock_len = z_perblock_len;
+    
+        this.mat_book = mat_book;
         
         //Intersection Heights are adressed x, y
         grid_heights = new int[x_block_len + 1][z_block_len + 1];
@@ -77,16 +83,16 @@ public class City extends CityStructure{
         //vals[ rand.nextInt(vals.length) ];
     }
     
-    public void build(BlockDetail detail, BuildingFactory factory){
+    public void build(BlockDetail detail){
         //Step 1: Generate the blocks, block by block
-        this.buildBlocks(detail, factory);
+        this.buildBlocks(detail);
         //Step 2: Generate the intersections, intersection by intersection
-        this.buildIntersections(factory);
+        this.buildIntersections();
         //Step 3: Generate the roads
-        this.buildRoads(factory);
+        this.buildRoads();
     }
     
-    private void buildBlocks(BlockDetail detail, BuildingFactory factory){
+    private void buildBlocks(BlockDetail detail){
         CityBlock block;
         int[] block_height;
         
@@ -116,11 +122,10 @@ public class City extends CityStructure{
                 x_len = x_perblock_len - (adjust_x + (z_para_sizes[x + 1].unitWidth / 2) );
                 z_len = z_perblock_len - (adjust_z + (x_para_sizes[z + 1].unitWidth / 2));
 
-                int[] no_cuts = new int[]{0, 0, 0, 0};
-                block = new BlockAlley(detail, block_height, no_cuts, x_len, z_len, true);
+                block = new BlockAlley(mat_book, detail, x_len, z_len, block_height, true);
                 //block = new BlockBlank(detail, block_height, no_cuts, bLength, bWidth);
                 
-                block.generateBuildings(factory);
+                block.generateBuildings();
                 block.setComboTranslation(
                     (x * x_perblock_len) + adjust_x, 0, (z * z_perblock_len) + adjust_z, 
                     0, 0, 0
@@ -129,7 +134,7 @@ public class City extends CityStructure{
             }
     }
     
-    private void buildIntersections(BuildingFactory factory){
+    private void buildIntersections(){
         Geometry section;
         
         float new_x;
@@ -143,7 +148,7 @@ public class City extends CityStructure{
                 x_len = z_para_sizes[x].unitWidth;
                 z_len = x_para_sizes[z].unitWidth;
                 
-                section = factory.intersection(grid_heights[x][z], z_len, x_len);
+                section = this.geom_intersection( x_len, z_len, grid_heights[x][z] );
                 
                 new_x = (x * x_perblock_len - (x_len / 2)) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 new_z = (z * z_perblock_len - (z_len / 2)) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
@@ -153,7 +158,7 @@ public class City extends CityStructure{
             }
     }
     
-    private void buildRoads(BuildingFactory factory){
+    private void buildRoads(){
         Geometry section;
         
         float newX;
@@ -174,7 +179,7 @@ public class City extends CityStructure{
                     this.grid_heights[x][z + 1], this.grid_heights[x][z]
                 };
                 
-                section = factory.road(heights, x_len, z_len);
+                section = this.geom_road( x_len, z_len, heights );
                 
                 newX = (x * x_perblock_len - x_len / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 newZ = (z * z_perblock_len + x_para_sizes[z].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
@@ -195,7 +200,7 @@ public class City extends CityStructure{
                     this.grid_heights[x + 1][z], this.grid_heights[x + 1][z]
                 };
                 
-                section = factory.road(heights, x_len, z_len);
+                section = this.geom_road( x_len, z_len, heights );
                 
                 newX = (x * x_perblock_len + z_para_sizes[x].unitWidth / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
                 newZ = (z * z_perblock_len - z_len / 2) * GOLDEN_PIXEL_COUNT * VIRTUAL_LENGTH_PER_PIXEL;
@@ -204,7 +209,41 @@ public class City extends CityStructure{
 
                 this.addFeature(section);
             }
-        }
-       
+        }  
     }
+    
+    public Geometry geom_intersection( int unit_x, int unit_z, int unit_height ){
+        Geometry sect;
+        Material baseMat;
+        
+        baseMat = this.mat_book.getBaseMat();
+        
+        sect = new Geometry("intersection", 
+            new CivilizedWarpingQuad(
+                unit_x, unit_z, unit_height
+            ) 
+        );
+        
+        sect.setMaterial(baseMat);   
+        
+        return sect;
+    }
+
+    public Geometry geom_road(int unit_x, int unit_z, int[] unit_heights){
+        Geometry road;
+        Material baseMat;
+        
+        baseMat = this.mat_book.getBaseMat();
+        
+        road = new Geometry("road", 
+            new CivilizedWarpingQuad(
+                unit_x, unit_z, unit_heights
+            ) 
+        );
+        
+        road.setMaterial(baseMat);
+
+        return road;
+    }
+    
 }

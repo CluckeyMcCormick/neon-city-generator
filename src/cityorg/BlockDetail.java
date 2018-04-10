@@ -4,7 +4,7 @@
  */
 package cityorg;
 
-import building.Building;
+import building.BasicBuildingTemplate;
 
 /**
  *
