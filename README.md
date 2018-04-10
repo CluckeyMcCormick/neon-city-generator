@@ -1,4 +1,4 @@
-# Vape City
+# The Neon City (Generator)
 An attempt at a procedually generated, beautifully stylized city - inspired by both the sound and aesthetic of vaporwave.
 
 If you're asking "What does that mean?", that's just fine. You don't need to know the music to appreciate the aesthetic - which can be seen [here](https://levels.io/wp-content/uploads/2015/10/tumblr_nv2cqhOJPL1ufh7yno1_1280.png), [over here](https://ih1.redbubble.net/image.210256057.1956/flat,1000x1000,075,f.u1.jpg), and [right over there](https://thump-images.vice.com/images/tracks/meta/2015/09/15/prepare-to-get-deliriously-dreamy-with-vaporwave-sensation-2814s-beyond-blissful-shinjitsu-no-koi-1442324234.png?crop=1xw:0.9542220113852xh;center,top&resize=800:*&output-quality=75). Or just Google it! 
