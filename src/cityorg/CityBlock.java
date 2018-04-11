@@ -71,7 +71,7 @@ public abstract class CityBlock extends CityStructure {
     public static final int MIN_FRONT = BasicBuildingTemplate.MIN_UNIT_HEIGHT;
 
     protected MaterialBook mat_book;
-    private BlockDetail block_detail;
+    protected BlockDetail block_detail;
     
     private int unit_x; 
     private int unit_z;
@@ -174,19 +174,19 @@ public abstract class CityBlock extends CityStructure {
         );
     }
     
-    public int getUnitLength() {
+    public int getUnitX() {
         return unit_x;
     }
 
-    public void setUnitLength(int unitLength) {
+    public void setUnitX(int unitLength) {
         this.unit_x = unitLength;
     }
 
-    public int getUnitWidth() {
+    public int getUnitZ() {
         return unit_z;
     }
 
-    public void setUnitWidth(int unitWidth) {
+    public void setUnitZ(int unitWidth) {
         this.unit_z = unitWidth;
     }
 
@@ -233,7 +233,6 @@ public abstract class CityBlock extends CityStructure {
             + (this.east_slope.y * (unit_z - z));
     }
     
-    //To Do: Given X and Y, return Height
     public float heightGet(int x, int z){
         
         //We're in the upper plane if our current y value is greater than the divider slope

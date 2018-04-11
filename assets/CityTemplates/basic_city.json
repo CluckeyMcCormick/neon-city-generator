@@ -1,0 +1,31 @@
+
+[
+  {
+    "weight" : 2,
+    "ideal_height" : 12,
+    "ideal_face" : 9, 
+    "height_deviant" : 6,
+    "face_deviant" : 3,
+    "depth_deviant" : 1,
+    "window_styles" : [
+      "STANDARD", "VERTICAL", "RANDOM", "RIBBON"
+    ],
+    "window_weights" : [5, 5, 5, 5],
+    "building_types" : ["BASIC","SIXTH", "QUARTER", "THIRD"],
+    "building_weights" : [3, 1, 1, 1]
+  },
+  {
+    "weight" : 1,
+    "ideal_height" : 16,
+    "ideal_face" : 9, 
+    "height_deviant" : 8,
+    "face_deviant" : 1,
+    "depth_deviant" : 1,
+    "window_styles" : [
+      "VERTICAL", "RANDOM", "RIBBON"
+    ],
+    "window_weights" : [8, 4, 8],
+    "building_types" : ["SIXTH", "QUARTER", "THIRD", "BASIC"],
+    "building_weights" : [2, 2, 2, 1]
+  }
+]

@@ -21,6 +21,7 @@ import production.MaterialBook;
 public class City extends CityStructure{
 
     private MaterialBook mat_book;
+    private CityRandomTemplate rando_blocks;
     
     private final int x_block_len;
     private final int z_block_len;
@@ -36,13 +37,17 @@ public class City extends CityStructure{
     //The roads that run parallel to the z axis; indexed by x
     private RoadSize[] z_para_sizes;
     
-    public City(MaterialBook mat_book, int x_block_len, int z_block_len, int x_perblock_len, int z_perblock_len) {
+    public City(
+        MaterialBook mat_book, CityRandomTemplate rando_blocks, int x_block_len,
+        int z_block_len, int x_perblock_len, int z_perblock_len
+    ) {
         this.x_block_len = x_block_len;
         this.z_block_len = z_block_len;
         this.x_perblock_len = x_perblock_len;
         this.z_perblock_len = z_perblock_len;
     
         this.mat_book = mat_book;
+        this.rando_blocks = rando_blocks;
         
         //Intersection Heights are adressed x, y
         grid_heights = new int[x_block_len + 1][z_block_len + 1];
@@ -83,17 +88,18 @@ public class City extends CityStructure{
         //vals[ rand.nextInt(vals.length) ];
     }
     
-    public void build(BlockDetail detail){
+    public void build(){
         //Step 1: Generate the blocks, block by block
-        this.buildBlocks(detail);
+        this.buildBlocks();
         //Step 2: Generate the intersections, intersection by intersection
         this.buildIntersections();
         //Step 3: Generate the roads
         this.buildRoads();
     }
     
-    private void buildBlocks(BlockDetail detail){
+    private void buildBlocks(){
         CityBlock block;
+        BlockDetail detail;
         int[] block_height;
         
         int adjust_x;
@@ -122,6 +128,8 @@ public class City extends CityStructure{
                 x_len = x_perblock_len - (adjust_x + (z_para_sizes[x + 1].unitWidth / 2) );
                 z_len = z_perblock_len - (adjust_z + (x_para_sizes[z + 1].unitWidth / 2));
 
+                detail = this.rando_blocks.getRandomDetail();
+                
                 block = new BlockAlley(mat_book, detail, x_len, z_len, block_height, true);
                 //block = new BlockBlank(detail, block_height, no_cuts, bLength, bWidth);
                 

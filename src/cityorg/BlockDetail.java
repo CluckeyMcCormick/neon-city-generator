@@ -5,15 +5,20 @@
 package cityorg;
 
 import building.BasicBuildingTemplate;
+import building.WindowStyle;
+import java.util.List;
+import prime.RandomSingleton;
 
 /**
  *
  * @author frick
  */
 public class BlockDetail {
-    //If a building equals or exceeds this unitHeight, then it has warning lights
-    //If negative, then no warning lights!
-    private final int warnHeight;
+    //The window styles that are available
+    private List<WindowStyle> windows;
+    
+    //The window styles that are available
+    private List<BasicBuildingTemplate> buildings;
     
     // Our ideal height for the buildings in this block
     private final int idealHeight;
@@ -31,10 +36,13 @@ public class BlockDetail {
     private final int depthDeviant;
     
     public BlockDetail(
-        int warnHeight, int idealHeight, int idealFace, int heightDeviant, 
+        List<WindowStyle> windows, List<BasicBuildingTemplate> buildings, 
+        int idealHeight, int idealFace, int heightDeviant, 
         int faceDeviant, int depthDeviant
     ) {
-        this.warnHeight = warnHeight;
+        this.windows = windows;
+        this.buildings = buildings;
+        
         this.idealHeight = idealHeight;
         this.heightDeviant = heightDeviant;
         this.depthDeviant = depthDeviant;
@@ -42,16 +50,16 @@ public class BlockDetail {
         this.faceDeviant = faceDeviant;
     }
 
-    public boolean hasWarn(int height){
-        if(this.warnHeight < 0)
-            return false;
-        return height >= this.warnHeight;
-    }
-    
-    public int getWarnHeight() {
-        return warnHeight;
+    public BasicBuildingTemplate getRandomTemplate(){
+        RandomSingleton rs = RandomSingleton.getInstance();
+        return buildings.get( rs.nextInt( buildings.size() ) );
     }
 
+    public WindowStyle getRandomWindow(){
+        RandomSingleton rs = RandomSingleton.getInstance();
+        return windows.get( rs.nextInt( windows.size() ) );
+    }
+    
     public int getIdealHeight() {
         return idealHeight;
     }

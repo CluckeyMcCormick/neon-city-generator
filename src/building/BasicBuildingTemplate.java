@@ -23,6 +23,10 @@ public class BasicBuildingTemplate {
     
     public BasicBuildingTemplate(){}
     
+    public BuildingInstance nonStaticBuild(int unit_x, int unit_z, int unit_height, Material mat){
+        return build(unit_x, unit_z, unit_height, mat);
+    }
+    
     public static BuildingInstance build(int unit_x, int unit_z, int unit_height, Material mat){
         BuildingInstance bi;
         

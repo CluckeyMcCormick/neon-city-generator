@@ -6,7 +6,6 @@ package cityorg.blocktype;
 
 import building.BasicBuildingTemplate;
 import building.BuildingInstance;
-import building.WindowStyle;
 import cityorg.BlockDetail;
 import cityorg.Cardinal;
 import cityorg.CityBlock;
@@ -34,8 +33,8 @@ public class BlockAlley extends CityBlock{
     @Override
     public void generateBuildings() {
         
-        int lengthTotal = this.getUnitLength();
-        int widthTotal = this.getUnitWidth();
+        int lengthTotal = this.getUnitX();
+        int widthTotal = this.getUnitZ();
 
         this.subdivGen(Cardinal.SOUTH_EAST, 0, 0, lengthTotal / 2, widthTotal / 2 );
         this.subdivGen(Cardinal.SOUTH_WEST, lengthTotal / 2, 0, lengthTotal, widthTotal / 2);
@@ -72,9 +71,9 @@ public class BlockAlley extends CityBlock{
             
             heightAdj *= CityStructure.GOLDEN_PIXEL_COUNT * CityStructure.VIRTUAL_LENGTH_PER_PIXEL;
             
-            b = BasicBuildingTemplate.build(
+            b = block_detail.getRandomTemplate().nonStaticBuild(
                 unit_x - 1, unit_z - 1, height, 
-                this.mat_book.getRandomFullMat()
+                mat_book.getFullMat( block_detail.getRandomWindow() )
             );
 
             switch(orient){
@@ -107,18 +106,18 @@ public class BlockAlley extends CityBlock{
         //
         else{
             int randoX = 0;
-            int randoY = 0;
-            
-            if(unit_x > bd.getIdealFace())
-                randoY = rand.nextInt( unit_x - (MIN_FRONT + 1) * 2 ) + (MIN_FRONT + 1);
+            int randoZ = 0;
 
             if(unit_x > bd.getIdealFace())
                 randoX = rand.nextInt( unit_x - (MIN_FRONT + 1) * 2 ) + (MIN_FRONT + 1);
+
+            if(unit_z > bd.getIdealFace())
+                randoZ = rand.nextInt( unit_z - (MIN_FRONT + 1) * 2 ) + (MIN_FRONT + 1);
             
             if(ulX + randoX >= lrX)
                 randoX = (unit_x / 2);
-            if(ulZ + randoY >= lrZ)
-                randoY = (unit_x / 2);
+            if(ulZ + randoZ >= lrZ)
+                randoZ = (unit_z / 2);
             
             //A ulX, ulY
             //B ulX + randoX, ulY
@@ -134,9 +133,9 @@ public class BlockAlley extends CityBlock{
             //we only need to divide into top and bottom square (NORTH & SOUTH)
             if( unit_x <= bd.getIdealFace() + 1){
                 //North AF (side 0 || 2, side 1)
-                this.subdivGen(orient, ulX, ulZ, lrX, ulZ + randoY);
+                this.subdivGen(orient, ulX, ulZ, lrX, ulZ + randoZ);
                 //South DI (side 0 || 2, side 3)
-                this.subdivGen(orient, ulX, ulZ + randoY, lrX, lrZ);
+                this.subdivGen(orient, ulX, ulZ + randoZ, lrX, lrZ);
             }
             //If the width was fine,
             //we only need to divide into left and right (WEST & EAST)
@@ -149,13 +148,13 @@ public class BlockAlley extends CityBlock{
             else{
                 //Subdivide into 4 squares
                 //Northwest AE (side 1, side 0)
-                this.subdivGen(orient, ulX, ulZ, ulX + randoX, ulZ + randoY);  
+                this.subdivGen(orient, ulX, ulZ, ulX + randoX, ulZ + randoZ);  
                 //Northeast BF (side 1, side 2)
-                this.subdivGen(orient, ulX + randoX, ulZ, lrX, ulZ + randoY); 
+                this.subdivGen(orient, ulX + randoX, ulZ, lrX, ulZ + randoZ); 
                 //Southwest DH (side 3, side 0)
-                this.subdivGen(orient, ulX, ulZ + randoY, ulX + randoX, lrZ); 
+                this.subdivGen(orient, ulX, ulZ + randoZ, ulX + randoX, lrZ); 
                 //Southeast EI (side 3, side 2)
-                this.subdivGen(orient, ulX + randoX, ulZ + randoY, lrX, lrZ); 
+                this.subdivGen(orient, ulX + randoX, ulZ + randoZ, lrX, lrZ); 
             }
         }        
     }

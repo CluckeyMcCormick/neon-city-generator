@@ -98,22 +98,20 @@ MaterialDef Simple {
                 OutputMappings {
                 }
             }
-            ShaderNode MaxAlpha {
-                Definition : Max Alpha Color : Shaders/MaxAlpha.j3sn
+            ShaderNode ColorAlphaMixer {
+                Definition : ColorAlphaMixer : Shaders/ColorAlphaMix.j3sn
                 InputMappings {
-                    color01 = LitMult.outColor
-                    color02 = BaseMidMix.outColor
-                }
-                OutputMappings {
+                    color1 = LitMult.outColor
+                    color2 = BaseMidMix.outColor
                 }
             }
-            ShaderNode HeightCutoff {
+            ShaderNode HeightCutoffRevise {
                 Definition : Height Color Cutoff : Shaders/HeightCutoff.j3sn
                 InputMappings {
-                    upperColor = MaxAlpha.outColor
+                    upperColor = ColorAlphaMixer.outColor
                     lowerColor = MatParam.BaseColor
-                    position = AttributeToVarying.vec3Variable
                     cutoff = MatParam.Cutoff
+                    position = AttributeToVarying.vec3Variable
                 }
                 OutputMappings {
                     Global.color = outColor

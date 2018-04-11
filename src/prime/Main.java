@@ -10,6 +10,7 @@ import com.jme3.renderer.RenderManager;
 
 import cityorg.BlockDetail;
 import cityorg.City;
+import cityorg.CityRandomTemplate;
 
 import com.jme3.math.Vector3f;
 import production.MaterialBook;
@@ -48,14 +49,15 @@ public class Main extends SimpleApplication {
             new int[] {blankWidthA, blankWidthA, blankHeightA, blankHeightA}
         );
         
-        ColorBook colob = new ColorBook( "assets/base_colors.json" );
-        //colob = new ColorBook( "assets/banff_colors.json" );
+        ColorBook colob = new ColorBook( "assets/ColorSets/base_colors.json" );
+        colob = new ColorBook( "assets/ColorSets/banff_colors.json" );
         
-        MaterialBook mb  = MaterialBuilder.buildMatBook(colob, bd_low_band, this.assetManager);        
-        BlockDetail blockRespDet = new BlockDetail(-1, 12, 9, 6, 3, 1);
+        MaterialBook mb  = MaterialBuilder.buildMatBook(colob, bd_low_band, this.assetManager);
+        CityRandomTemplate crt = new CityRandomTemplate();
+        crt = new CityRandomTemplate("assets/CityTemplates/basic_city.json");
 
-        City the_city = new City(mb, 6, 6, 32, 32);
-        the_city.build(blockRespDet);
+        City the_city = new City(mb, crt, 6, 6, 32, 32);
+        the_city.build();
         rootNode.attachChild( the_city.getNode() );
         //CityBlock block = new BlockAlley(blockRespDet, new int[]{0, 0, 0, 0}, new int[]{0, 0, 0, 0}, 16, 48, false);
         //block.generateBuildings(bf_low_band);

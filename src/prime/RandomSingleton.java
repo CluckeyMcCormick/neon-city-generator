@@ -50,4 +50,9 @@ public class RandomSingleton {
     public double nextGaussian(){
         return rnd.nextGaussian();
     }
+    
+    public Random getRandom(){
+        return rnd;
+    }
+    
 }

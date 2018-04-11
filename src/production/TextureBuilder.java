@@ -196,11 +196,6 @@ public class TextureBuilder {
                 floor++;
         }
         
-        for(int i = 0; i < trashPyramid.length; i++)
-            for(int j = 0; j < trashPyramid[i].length; j++)
-                if(!trashPyramid[i][j])
-                    System.out.println(i + ", " + j);
-        
     }
     
     private static void drawCell( 
@@ -215,16 +210,22 @@ public class TextureBuilder {
         int gaussed;
         int baseValue;
         int deviation;
+        int alpha_final;
    
+        alpha_final = 255;
+        
         baseValue = 218;
         deviation = 32;
         
+                
         switch(state){
             case LIT:
                 bi = biLit;
                 biAlt = biDim;
                 blank = Color.TRANSLUCENT;
                 altBlank = Color.WHITE.getRGB();
+                alpha_final = 255 + Math.round( (float) rs.nextGaussian() * 96 );
+                alpha_final = Math.max( 0, Math.min(255, alpha_final) );
                 break;
             case DIM:
                 bi = biDim;
@@ -255,11 +256,12 @@ public class TextureBuilder {
                     
                     if(gaussed < baseValue - deviation)
                         gaussed = baseValue;
-                            
+                    
                     bi.setRGB( 
-                            cell * bd.getCellPixWidth() + x, 
-                            floor * bd.getCellPixHeight() + y, 
-                            new Color(gaussed,gaussed,gaussed).getRGB() );        
+                        cell * bd.getCellPixWidth() + x, 
+                        floor * bd.getCellPixHeight() + y, 
+                        new Color(gaussed,gaussed,gaussed,alpha_final).getRGB()
+                    );        
                 }
             }
             baseValue -= 1;

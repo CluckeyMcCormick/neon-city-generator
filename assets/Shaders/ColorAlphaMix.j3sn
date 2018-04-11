@@ -1,0 +1,21 @@
+ShaderNodeDefinitions{ 
+    ShaderNodeDefinition ColorAlphaMixer {      
+        Type: Fragment
+
+        Shader GLSL120: Shaders/ColorAlphaMix120.frag
+        
+        Documentation{
+            Attempts to layer color1 over color2, according to color1's alpha.            
+            @input vec4 color1 The color to be "layered on top". We use this alpha value.
+            @input vec4 color2 The color to be "layered below".
+            @output vec4 outColor The final color.
+        }
+        Input {
+            vec4 color1
+            vec4 color2
+        }
+        Output {
+             vec4 outColor
+        }
+    }
+}
