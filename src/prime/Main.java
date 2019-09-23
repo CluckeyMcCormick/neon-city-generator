@@ -50,7 +50,7 @@ public class Main extends SimpleApplication {
         );
         
         ColorBook colob = new ColorBook( "assets/ColorSets/base_colors.json" );
-        colob = new ColorBook( "assets/ColorSets/banff_colors.json" );
+        colob = new ColorBook( "assets/ColorSets/hallowed_colors.json" );
         
         MaterialBook mb  = MaterialBuilder.buildMatBook(colob, bd_low_band, this.assetManager);
         CityRandomTemplate crt = new CityRandomTemplate();
